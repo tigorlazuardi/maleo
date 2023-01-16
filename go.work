@@ -3,5 +3,6 @@ go 1.19
 use (
 	.
 	./bucket
+	./bucket/maleos3/v2
 	./loader
 )
