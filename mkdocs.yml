@@ -1,0 +1,12 @@
+site_name: Maleo
+theme:
+    name: material
+    features:
+        - content.code.copy
+markdown_extensions:
+    - admonition
+    - pymdownx.highlight:
+          anchor_linenums: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
