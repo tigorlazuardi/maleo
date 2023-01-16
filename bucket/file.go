@@ -4,6 +4,8 @@ import (
 	"io"
 )
 
+// --8<-- [start:file]
+
 type File interface {
 	Data() io.Reader
 	Filename() string
@@ -14,7 +16,9 @@ type File interface {
 	Close() error
 }
 
-type implFile struct {
+// --8<-- [end:file]
+
+type file struct {
 	data     io.Reader
 	filename string
 	mimetype string
@@ -22,31 +26,31 @@ type implFile struct {
 	size     int
 }
 
-func (f implFile) Data() io.Reader {
+func (f *file) Data() io.Reader {
 	return f.data
 }
 
-func (f implFile) Filename() string {
+func (f *file) Filename() string {
 	return f.filename
 }
 
-func (f implFile) ContentType() string {
+func (f *file) ContentType() string {
 	return f.mimetype
 }
 
-func (f *implFile) Read(p []byte) (n int, err error) {
+func (f *file) Read(p []byte) (n int, err error) {
 	return f.data.Read(p)
 }
 
-func (f implFile) Pretext() string {
+func (f *file) Pretext() string {
 	return f.pretext
 }
 
-func (f implFile) Size() int {
+func (f *file) Size() int {
 	return f.size
 }
 
-func (f *implFile) Close() error {
+func (f *file) Close() error {
 	if closer, ok := f.data.(io.Closer); ok {
 		return closer.Close()
 	}
@@ -54,12 +58,19 @@ func (f *implFile) Close() error {
 }
 
 // NewFile is a built-in constructor for File implementor.
+//
+// if data implements io.Closer, it will be closed when the file is uploaded by the Bucket.
+//
+// If WithFilename option is not provided, a randomly generated snowflake ID will be used.
+//
+// if data is a reader that have method .Len() int it will be used to set the file size. (e.g. bytes.Buffer).
+// Otherwise, the size will be set to -1. You may use WithFilesize to set the size manually.
 func NewFile(data io.Reader, mimetype string, opts ...FileOption) File {
-	var size int
+	size := -1
 	if lh, ok := data.(LengthHint); ok {
 		size = lh.Len()
 	}
-	f := &implFile{
+	f := &file{
 		data:     data,
 		filename: snowflakeNode.Generate().String(),
 		mimetype: mimetype,
@@ -83,29 +94,32 @@ type UploadResult struct {
 }
 
 type FileOption interface {
-	apply(*implFile)
+	apply(*file)
 }
 
-type FileOptionFunc func(*implFile)
+type FileOptionFunc func(*file)
 
-func (f FileOptionFunc) apply(file *implFile) {
+func (f FileOptionFunc) apply(file *file) {
 	f(file)
 }
 
+// WithPretext sets a description for the file.
 func WithPretext(pretext string) FileOption {
-	return FileOptionFunc(func(file *implFile) {
+	return FileOptionFunc(func(file *file) {
 		file.pretext = pretext
 	})
 }
 
+// WithFilesize sets the size of the file.
 func WithFilesize(size int) FileOption {
-	return FileOptionFunc(func(file *implFile) {
+	return FileOptionFunc(func(file *file) {
 		file.size = size
 	})
 }
 
+// WithFilename sets the filename of the file. Default is a randomly generated snowflake ID.
 func WithFilename(filename string) FileOption {
-	return FileOptionFunc(func(file *implFile) {
+	return FileOptionFunc(func(file *file) {
 		file.filename = filename
 	})
 }
