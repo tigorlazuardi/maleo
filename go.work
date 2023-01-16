@@ -7,4 +7,5 @@ use (
 	./bucket/maleos3/v2
 	./loader
 	./locker
+	./locker/maleogoredis/v8
 )
