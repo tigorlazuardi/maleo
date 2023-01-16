@@ -1,7 +1,6 @@
 package bucket
 
 import (
-	"context"
 	"io"
 )
 
@@ -81,15 +80,6 @@ type UploadResult struct {
 	File File
 	// If Error is not nil, the upload is considered failed.
 	Error error
-}
-
-type Bucket interface {
-	// Upload File(s) to the bucket.
-	// If File.data implements io.Closer, the close method will be called after upload is done.
-	// Whether the Upload operation is successful or not.
-	//
-	// The number of result will be the same as the number of files uploaded.
-	Upload(ctx context.Context, files []File) []UploadResult
 }
 
 type FileOption interface {
