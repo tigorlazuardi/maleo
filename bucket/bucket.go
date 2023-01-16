@@ -1,3 +1,4 @@
+// Package bucket is a representation of a bucket endpoint.
 package bucket
 
 import (
