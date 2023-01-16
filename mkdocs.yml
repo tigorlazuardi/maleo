@@ -14,6 +14,7 @@ theme:
         - navigation.indexes
         - search.suggest
         - search.highlight
+        - content.tabs.link
 markdown_extensions:
     - admonition
     - pymdownx.tasklist:
@@ -23,6 +24,8 @@ markdown_extensions:
     - pymdownx.inlinehilite
     - pymdownx.snippets
     - pymdownx.superfences
+    - pymdownx.tabbed:
+          alternate_style: true
 
 plugins:
     - search
