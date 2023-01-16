@@ -6,4 +6,5 @@ use (
 	./bucket/maleominio/v7
 	./bucket/maleos3/v2
 	./loader
+	./locker
 )
