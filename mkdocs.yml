@@ -1,12 +1,31 @@
 site_name: Maleo
 theme:
+    icon:
+        tag:
+            s3: material/aws
+    palette:
+        scheme: slate
     name: material
     features:
         - content.code.copy
+        - navigation.footer
+        - navigation.tracking
+        - navigation.expand
+        - navigation.indexes
+        - search.suggest
+        - search.highlight
 markdown_extensions:
     - admonition
+    - pymdownx.tasklist:
+          custom_checkbox: true
     - pymdownx.highlight:
           anchor_linenums: true
     - pymdownx.inlinehilite
     - pymdownx.snippets
     - pymdownx.superfences
+
+plugins:
+    - search
+    - tags
+
+repo_url: https://github.com/tigorlazuardi/maleo
