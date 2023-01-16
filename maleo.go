@@ -230,3 +230,7 @@ func (m *Maleo) Log(ctx context.Context, entry Entry) {
 func (m *Maleo) LogError(ctx context.Context, err Error) {
 	m.logger.LogError(ctx, err)
 }
+
+func (m *Maleo) Service() Service {
+	return m.service
+}

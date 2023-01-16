@@ -19,8 +19,6 @@ func NewTestingMaleo() (*Maleo, *TestingJSONLogger) {
 	return NewTestingMaleoWithService(Service{
 		Name:        "test",
 		Environment: "test",
-		Repository:  "",
-		Branch:      "",
 		Type:        "test",
 		Version:     "v0.1.0-test",
 	})
@@ -41,7 +39,7 @@ func NewTestingJSONLogger() *TestingJSONLogger {
 }
 
 // Log implements maleo.Logger.
-func (t *TestingJSONLogger) Log(ctx context.Context, entry Entry) {
+func (t *TestingJSONLogger) Log(_ context.Context, entry Entry) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 
@@ -52,7 +50,7 @@ func (t *TestingJSONLogger) Log(ctx context.Context, entry Entry) {
 }
 
 // LogError implements maleo.Logger.
-func (t *TestingJSONLogger) LogError(ctx context.Context, err Error) {
+func (t *TestingJSONLogger) LogError(_ context.Context, err Error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 

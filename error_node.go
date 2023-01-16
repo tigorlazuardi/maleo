@@ -302,6 +302,9 @@ func (e *ErrorNode) Service() Service {
 
 // Unwrap Returns the error that is wrapped by this error. To be used by errors.Is and errors.As functions from errors library.
 func (e *ErrorNode) Unwrap() error {
+	if e.next != nil {
+		return e.next
+	}
 	return e.inner.origin
 }
 

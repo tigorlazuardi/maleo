@@ -6,8 +6,6 @@ import "strings"
 type Service struct {
 	Name        string `json:"name,omitempty"`
 	Environment string `json:"environment,omitempty"`
-	Repository  string `json:"repository,omitempty"`
-	Branch      string `json:"branch,omitempty"`
 	Type        string `json:"type,omitempty"`
 	Version     string `json:"version,omitempty"`
 }

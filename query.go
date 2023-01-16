@@ -152,7 +152,7 @@ func (query) SearchHTTPCode(err error, code int) Error {
 //
 // It is sorted from the top most error to the bottom most error.
 func (query) CollectErrors(err error) []Error {
-	return collectErrors(err, nil)
+	return collectErrors(err, make([]Error, 0, 4))
 }
 
 func collectErrors(err error, input []Error) []Error {
@@ -215,11 +215,16 @@ func (query) BottomError(err error) Error {
 	}
 	var result Error
 	unwrapped := top.Unwrap()
+	if e, ok := unwrapped.(Error); ok { //nolint:errorlint
+		result = e
+	} else {
+		result = top
+	}
 	for unwrapped != nil {
 		if e, ok := unwrapped.(Error); ok { //nolint:errorlint
 			result = e
 		}
-		unwrapped = errors.Unwrap(err)
+		unwrapped = errors.Unwrap(unwrapped)
 	}
 
 	return result
