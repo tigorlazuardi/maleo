@@ -1,4 +1,4 @@
-# Maleo Minio
+# Minio
 
 Maleo Minio is an implementation of Bucket wrapping around
 [Minio SDK Go v7](https://min.io/docs/minio/linux/developers/go/minio-go.html).
