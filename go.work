@@ -9,4 +9,5 @@ use (
 	./locker
 	./locker/maleogomemcache
 	./locker/maleogoredis/v8
+	./locker/maleogoredis/v9
 )
