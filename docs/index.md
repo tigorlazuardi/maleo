@@ -1,5 +1,17 @@
 # Introduction
 
+!!! note "Work in Progress"
+
+    The documentation for this project is still in progress.
+    Many submodules still have missing explanation and examples,
+    They will be updated as soon as possible.
+
+!!! info "Proof Read Needed"
+
+    Writing proper English is not easy. Sentences need to be restructured and grammars need to be fixed for the
+    documentation to be a good read. If you're interested in helping a poor fellow out, please contact me by opening an
+    issue.
+
 Maleo is an _opiniated_ Golang library / framework to handle Errors, Logging, and Notification. All of those are handled
 in one swoop to enhance developer experience.
 
@@ -39,8 +51,8 @@ If you want to know the motivation why this exist check [here](./trivia/why-does
             Code(400).
             Context(maleo.F{"foo": "bar"}).
             Message("message test").
-            Log(ctx).
-            Notify(ctx)
+            Log(ctx). // Log your error.
+            Notify(ctx) // Notify your error to Discord or something else.
     }
     ```
 
