@@ -2,11 +2,12 @@ package maleos3_test
 
 import (
 	"context"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/tigorlazuardi/maleo/bucket"
-	"github.com/tigorlazuardi/maleo/bucket/maleos3/v2"
-	"strings"
+	"github.com/tigorlazuardi/maleo/bucket/maleos3-v2"
 )
 
 // --8<-- [start:integrated]

@@ -1,4 +1,4 @@
-module github.com/tigorlazuardi/maleo/bucket/maleos3/v2
+module github.com/tigorlazuardi/maleo/bucket/maleos3-v2
 
 go 1.19
 
