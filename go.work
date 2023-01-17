@@ -10,5 +10,6 @@ use (
 	./locker/maleogomemcache
 	./locker/maleogoredis/v8
 	./locker/maleogoredis/v9
+	./maleodiscord
 	./queue
 )
