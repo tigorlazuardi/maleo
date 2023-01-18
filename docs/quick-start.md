@@ -1,3 +1,8 @@
+---
+hide:
+    - toc
+---
+
 # Quick Start
 
 **Maleo by default does nothing**. It will still do the wrapping and some nice stuffs around as one might expect, but

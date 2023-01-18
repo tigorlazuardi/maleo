@@ -1,3 +1,8 @@
+---
+hide:
+    - toc
+---
+
 # Bucket
 
 Bucket provides a way for Messengers to store files.
@@ -12,8 +17,8 @@ The `Bucket.Upload` method is the entry point for you to execute your own upload
 
 Rate limit and retry are handled by the implementor (a.k.a. you).
 
-Maleo's built-in Messengers will wait for the `Upload` method to return before sending the message.
-The same cannot be said for custom Messengers. Consult the documentation of your custom Messenger for more information.
+Maleo's built-in Messengers will wait for the `Upload` method to return before sending the message. The same cannot be
+said for custom Messengers. Consult the documentation of your custom Messenger for more information.
 
 ## File
 

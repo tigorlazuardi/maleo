@@ -1,3 +1,8 @@
+---
+hide:
+    - toc
+---
+
 # Why does this library exist?
 
 Errors are a part of life in a development life cycle. Naturally, everyone have their own way to handle errors. But,

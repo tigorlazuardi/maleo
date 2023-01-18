@@ -4,7 +4,21 @@ theme:
         tag:
             s3: material/aws
     palette:
-        scheme: slate
+        - media: '(prefers-color-scheme: light)'
+          scheme: default
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+          primary: deep orange
+
+        # Palette toggle for dark mode
+        - media: '(prefers-color-scheme: dark)'
+          scheme: slate
+          toggle:
+              icon: material/brightness-4
+              name: Switch to light mode
+          primary: deep purple
+
     name: material
     custom_dir: overrides
     features:
