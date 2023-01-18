@@ -1,8 +1,13 @@
+set positional-arguments
+
 sync-deps:
 	@GOSUMDB=off ./scripts/sync-deps.sh
 
-docs-build: docs-binary
-	@mkdocs build
+docs-deploy version: docs-binary
+	@mike deploy --push --update-aliases "$1" latest
+
+docs-build version: docs-binary
+	@mike deploy --update-aliases "$1" latest
 
 docs: docs-binary
 	@mkdocs serve
@@ -15,6 +20,12 @@ docs-binary:
 	@if ! command -v mike >/dev/null 2>&1; then \
 		echo "==> [just]: Installing mike"; \
 		pip install mike; \
+	fi
+	@if ! test -f mkdocs.yml; then \
+		echo "==> [just]: deploying first docs"; \
+		mkdocs new .; \
+		mike deploy --push --update-aliases 0.1 latest; \
+		mike set-default --push latest; \
 	fi
 
 test:
