@@ -11,7 +11,7 @@ import (
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 
-	"github.com/tigorlazuardi/maleo/locker/maleogoredis/v8"
+	"github.com/tigorlazuardi/maleo/locker/maleogoredis-v8"
 )
 
 func createClient() (*redis.Client, func(), error) {

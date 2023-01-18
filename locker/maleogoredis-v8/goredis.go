@@ -2,9 +2,10 @@ package maleogoredis
 
 import (
 	"context"
+	"time"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/tigorlazuardi/maleo/locker"
-	"time"
 )
 
 // New create new redis locker.
