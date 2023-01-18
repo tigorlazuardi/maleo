@@ -6,6 +6,7 @@ theme:
     palette:
         scheme: slate
     name: material
+    custom_dir: overrides
     features:
         - content.code.copy
         - navigation.footer
@@ -26,6 +27,9 @@ markdown_extensions:
     - pymdownx.superfences
     - pymdownx.tabbed:
           alternate_style: true
+extra:
+    version:
+        provider: mike
 
 plugins:
     - search

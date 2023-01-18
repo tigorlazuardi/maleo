@@ -1,14 +1,21 @@
+sync-deps:
+	@GOSUMDB=off ./scripts/sync-deps.sh
+
+docs-build: docs-binary
+	@mkdocs build
+
 docs: docs-binary
-	@docker run --rm -it -v ${PWD}:/docs squidfunk/mkdocs-material:latest build
-
-docs-serve-local: docs-binary
-	@DOCKER_HOST="" docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:latest
-
-docs-serve: docs-binary
-	@docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material:latest
+	@mkdocs serve
 
 docs-binary:
-	@test -f './mkdocs.yml' || DOCKER_HOST="" docker run --rm -it -v ${PWD}:/docs squidfunk/mkdocs-material:latest new .
+	@if ! command -v mkdocs >/dev/null 2>&1; then \
+		echo "==> [just]: Installing mkdocs"; \
+		pip install mkdocs-material; \
+	fi
+	@if ! command -v mike >/dev/null 2>&1; then \
+		echo "==> [just]: Installing mike"; \
+		pip install mike; \
+	fi
 
 test:
     @go test -v -cover ./...
