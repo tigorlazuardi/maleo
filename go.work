@@ -3,7 +3,7 @@ go 1.19
 use (
 	.
 	./bucket
-	./bucket/maleominio/v7
+	./bucket/maleominio-v7
 	./bucket/maleos3-v2
 	./loader
 	./locker

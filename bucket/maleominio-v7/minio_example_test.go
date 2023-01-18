@@ -9,7 +9,7 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/tigorlazuardi/maleo/bucket"
-	"github.com/tigorlazuardi/maleo/bucket/maleominio/v7"
+	"github.com/tigorlazuardi/maleo/bucket/maleominio-v7"
 )
 
 // --8<-- [start:example]
