@@ -3,18 +3,16 @@ package maleodiscord
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/tigorlazuardi/maleo"
 	"github.com/tigorlazuardi/maleo/bucket"
 )
 
-const discordLimit = 6000
+// discordLimit is actually 6000, but we have to reserve 1000 characters create attachments.
+const discordLimit = 5000
 
 func (d *Discord) defaultEmbedBuilder(
 	ctx context.Context,
@@ -259,129 +257,6 @@ func (d *Discord) buildErrorEmbed(
 	})
 }
 
-func (d *Discord) buildMetadataEmbed(
-	ctx context.Context,
-	msg maleo.MessageContext,
-	extra *ExtraInformation,
-	limit int,
-) (*Embed, bucket.File, int) {
-	count := 0
-	embed := &Embed{
-		Type:      "rich",
-		Title:     "Metadata",
-		Color:     0x645a5b, // Scorpion Grey
-		Timestamp: msg.Time().Format(time.RFC3339),
-	}
-	for _, v := range d.trace.CaptureTrace(ctx) {
-		embed.Fields = append(embed.Fields, &EmbedField{
-			Name:   v.Key,
-			Value:  v.Value,
-			Inline: true,
-		})
-		count += len(v.Key) + len(v.Value)
-	}
-	service := msg.Service()
-	if service.Name != "" {
-		const name = "Service"
-		embed.Fields = append(embed.Fields, &EmbedField{
-			Name:   name,
-			Value:  service.Name,
-			Inline: true,
-		})
-		count += len(name) + len(service.Name)
-	}
-	if service.Type != "" {
-		const sType = "Type"
-		embed.Fields = append(embed.Fields, &EmbedField{
-			Name:   sType,
-			Value:  service.Type,
-			Inline: true,
-		})
-		count += len(sType) + len(service.Type)
-	}
-	if service.Environment != "" {
-		const env = "Environment"
-		embed.Fields = append(embed.Fields, &EmbedField{
-			Name:   env,
-			Value:  service.Environment,
-			Inline: true,
-		})
-		count += len(env) + len(service.Type)
-	}
-	const threadIDName = "Thread ID"
-	embed.Fields = append(embed.Fields, &EmbedField{
-		Name:   threadIDName,
-		Value:  extra.ThreadID.String(),
-		Inline: true,
-	})
-	count += len(threadIDName) + len(extra.ThreadID.String())
-	var iteration string
-	if msg.ForceSend() {
-		iteration = "(Force Send)"
-	} else {
-		iteration = strconv.Itoa(extra.Iteration)
-	}
-	const messageIteration = "Message Iteration"
-	embed.Fields = append(embed.Fields, &EmbedField{
-		Name:   messageIteration,
-		Value:  iteration,
-		Inline: true,
-	})
-	count += len(messageIteration) + len(iteration)
-	ts := extra.CooldownTimeEnds.Unix()
-	const nextPossibleEarliestRepeat = "Next Possible Earliest Repeat"
-	repeatValue := fmt.Sprintf("<t:%d:F> | <t:%d:R>", ts, ts)
-	embed.Fields = append(embed.Fields, &EmbedField{
-		Name:   nextPossibleEarliestRepeat,
-		Value:  repeatValue,
-		Inline: false,
-	})
-	count += len(messageIteration) + len(iteration)
-	if len(embed.Fields) > 25 {
-		embed.Fields = embed.Fields[:25]
-	}
-	display, data := new(bytes.Buffer), new(bytes.Buffer)
-	display.Reset()
-	display.Grow(limit)
-	data.Reset()
-	data.Grow(limit)
-	_, _ = display.WriteString(`**Caller Origin**`)
-	_, _ = display.WriteString("\n```\n")
-	_, _ = display.WriteString(msg.Caller().String())
-	_, _ = display.WriteString("\n```\n")
-	_, _ = display.WriteString(`**Caller Function**`)
-	_, _ = display.WriteString("\n```\n")
-	_, _ = display.WriteString(msg.Caller().ShortName())
-	_, _ = display.WriteString("\n```\n")
-	_, _ = display.WriteString(`**Cache Key**`)
-	_, _ = display.WriteString("\n```\n")
-	_, _ = display.WriteString(extra.CacheKey)
-	_, _ = display.WriteString("\n```")
-
-	if display.Len() > limit {
-		_, _ = data.Write(display.Bytes())
-		_, _ = data.WriteString("\n```json\n")
-		enc := json.NewEncoder(data)
-		enc.SetIndent("", "    ")
-		enc.SetEscapeHTML(false)
-		_ = enc.Encode(embed.Fields)
-		_, _ = data.WriteString("\n```")
-	}
-
-	embed, file, written := shouldCreateFile(&createFileContext{
-		embed:          embed,
-		display:        display,
-		data:           bytes.NewBufferString(display.String()),
-		contentType:    "text/markdown; charset=utf-8",
-		fileExtension:  "md",
-		suffixFilename: "_metadata",
-		limit:          limit,
-		extra:          extra,
-	})
-	count += written
-	return embed, file, count
-}
-
 func (d *Discord) buildErrorStackEmbed(
 	msg maleo.MessageContext,
 	limit int, extra *ExtraInformation,
@@ -401,17 +276,16 @@ func (d *Discord) buildErrorStackEmbed(
 	display, data := new(bytes.Buffer), new(bytes.Buffer)
 	display.Reset()
 	display.Grow(limit)
-	_, _ = display.WriteString("```")
-	_, _ = display.WriteString(content)
-	_, _ = display.WriteString("```")
-	content = display.String()
+	display.WriteString("```")
+	display.WriteString(content)
+	display.WriteString("```")
 	embed := &Embed{
 		Type:  "rich",
 		Title: "Error Stack",
 		Color: 0x5d0e16, // Cardinal Red Dark
 	}
 	if display.Len() > limit {
-		_, _ = data.Write(display.Bytes())
+		data.WriteString(content)
 	}
 	return shouldCreateFile(&createFileContext{
 		embed:          embed,
