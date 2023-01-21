@@ -19,7 +19,7 @@ import (
 
 type mockBucket map[string]any
 
-func (m mockBucket) Upload(ctx context.Context, files []bucket.File) []bucket.UploadResult {
+func (m mockBucket) Upload(_ context.Context, files []bucket.File) []bucket.UploadResult {
 	results := make([]bucket.UploadResult, len(files))
 	for i, f := range files {
 		url := "https://example.com/" + f.Filename()
@@ -60,7 +60,7 @@ func TestBucket(t *testing.T) {
 					j := jsonassert.New(t)
 					j.Assertf(string(body), `
 					{
-					  "content": "@here an error has occurred on service **test** on type **test** on environment **test**",
+					  "content": "@here an error has occurred from service **test** on type **test** on environment **test**",
 					  "embeds": [
 						{
 						  "title": "Summary",
@@ -117,22 +117,12 @@ func TestBucket(t *testing.T) {
 										"value": "<<PRESENCE>>"
 									}
 								]
-							}
-						],
-						"attachments": [
-							{
-								"id": 0,
-								"filename": "<<PRESENCE>>",
-								"content_type": "text/markdown; charset=utf-8",
-								"size": 9029,
-								"url": "<<PRESENCE>>"
 							},
 							{
-								"id": 1,
-								"filename": "<<PRESENCE>>",
-								"content_type": "application/json",
-								"size": "<<PRESENCE>>",
-								"url": "<<PRESENCE>>"
+								"title": "Attachments",
+								"type": "rich",
+								"color": 1606980,
+								"fields": "<<PRESENCE>>"
 							}
 						]
 					}`)

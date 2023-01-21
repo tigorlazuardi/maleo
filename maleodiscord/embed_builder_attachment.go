@@ -9,7 +9,7 @@ import (
 func buildAttachmentEmbed(uploads []bucket.UploadResult) *Embed {
 	embed := &Embed{
 		Type:  "rich",
-		Title: "Attachment",
+		Title: "Attachments",
 		Color: 0x188544, // Green Jewel
 	}
 
