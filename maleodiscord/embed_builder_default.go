@@ -97,17 +97,12 @@ func (d *Discord) buildContextEmbed(
 	}
 
 	display, data := new(bytes.Buffer), new(bytes.Buffer)
-	display.Reset()
-	display.Grow(limit)
-	data.Reset()
-	data.Grow(limit)
-
 	contextData := msg.Context()
 	err := d.codeBlockBuilder.Build(display, contextData)
 	if err != nil {
-		_, _ = display.WriteString("Error building Context: ")
+		display.WriteString("Error building Context: ")
 		display.WriteString("```")
-		_, _ = display.WriteString(err.Error())
+		display.WriteString(err.Error())
 		display.WriteString("```\n")
 	}
 	if display.Len() > limit {

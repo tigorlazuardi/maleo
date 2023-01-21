@@ -162,7 +162,7 @@ func TestDiscord(t *testing.T) {
 					j := jsonassert.New(t)
 					want := `
 					{
-						"content": "@here message on service **test** on type **test** on environment **test**",
+						"content": "@here Message from service **test** on type **test** on environment **test**",
 						"embeds": [
 							{
 								"title": "Summary",
@@ -183,6 +183,11 @@ func TestDiscord(t *testing.T) {
 								"timestamp": "<<PRESENCE>>",
 								"color": 6576731,
 								"fields": [
+									{
+										"name": "foo",
+										"value": "bar",
+										"inline": true
+									},
 									{
 										"name": "Service",
 										"value": "test",

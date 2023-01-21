@@ -68,7 +68,7 @@ func buildIntro(service maleo.Service, err error) string {
 		s.WriteString("@here Message")
 	}
 	if service.Name != "" {
-		s.WriteString(" on service **")
+		s.WriteString(" from service **")
 		s.WriteString(service.Name)
 		s.WriteString("**")
 	}
@@ -133,34 +133,7 @@ func (d *Discord) bucketUpload(ctx context.Context, web *WebhookContext) (*Webho
 	results := d.bucket.Upload(ctx, web.Files)
 	d.hook.PostBucketUploadHook(ctx, web, results)
 	payload := web.Payload
-	errs := make([]error, 0, len(results))
-	for i, result := range results {
-		if result.Error != nil {
-			errs = append(errs, result.Error)
-			continue
-		}
-		var height, width int
-		if imgHint, ok := result.File.Data().(ImageSizeHint); ok {
-			height, width = imgHint.ImageSize()
-		}
-		payload.Attachments = append(payload.Attachments, &Attachment{
-			ID:          i,
-			Filename:    result.File.Filename(),
-			Description: result.File.Pretext(),
-			ContentType: result.File.ContentType(),
-			Size:        result.File.Size(),
-			URL:         result.URL,
-			Height:      height,
-			Width:       width,
-		})
-	}
-	if len(errs) > 0 {
-		return payload, maleo.
-			Bail("failed to upload some file(s) to bucket").
-			Caller(web.Message.Caller()).
-			Context(maleo.F{"errors": errs}).
-			Freeze()
-	}
+	payload.Embeds = append(payload.Embeds, buildAttachmentEmbed(results))
 	return payload, nil
 }
 
