@@ -262,7 +262,7 @@ func TestDiscord(t *testing.T) {
 					j := jsonassert.New(t)
 					want := `
 					{
-						"content": "@here an error has occurred on service **test** on type **test** on environment **test**",
+						"content": "@here an error has occurred from service **test** on type **test** on environment **test**",
 						"embeds": [
 							{
 								"title": "Summary",
@@ -365,7 +365,7 @@ func TestDiscord(t *testing.T) {
 					j := jsonassert.New(t)
 					want := `
 					{
-						"content": "@here an error has occurred on service **test** on type **test** on environment **test**"
+						"content": "@here an error has occurred from service **test** on type **test** on environment **test**"
 					}`
 					j.Assertf(string(body), want)
 					if t.Failed() {

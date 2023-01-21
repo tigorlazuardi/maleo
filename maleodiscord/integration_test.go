@@ -116,7 +116,7 @@ func TestIntegration(t *testing.T) {
 	// mal.NewEntry("test %d", 123).Context(maleo.F{"foo": "bar", "struct": foo{}}).Notify(ctx)
 	origin := mal.Wrap(foo{FooMessage: strings.Repeat("something > something < something & Bad Request", 300)}).
 		Code(400).
-		Message("this is bad request error").Context(maleo.F{
+		Message("message from TestIntegration").Context(maleo.F{
 		"light": map[string]any{"year": 2021, "month": "january"},
 		"bar":   "baz",
 	}).Freeze()
