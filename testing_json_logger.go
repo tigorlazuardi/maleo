@@ -27,7 +27,7 @@ func NewTestingMaleo() (*Maleo, *TestingJSONLogger) {
 // NewTestingMaleoWithService returns a new Maleo instance with a TestingJSONLogger with a custom service metadata.
 func NewTestingMaleoWithService(service Service) (*Maleo, *TestingJSONLogger) {
 	logger := NewTestingJSONLogger()
-	m := NewMaleo(service, Option.Init().Logger(logger))
+	m := New(service, Option.Init().Logger(logger))
 	return m, logger
 }
 

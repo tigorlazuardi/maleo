@@ -42,7 +42,7 @@ func TestResponder_RespondError(t *testing.T) {
 	}
 	type testRequestGenerator = func(server *httptest.Server) *http.Request
 	maleoGen := func(logger maleo.Logger) *maleo.Maleo {
-		t := maleo.NewMaleo(maleo.Service{
+		t := maleo.New(maleo.Service{
 			Name:        "responder-test",
 			Environment: "testing",
 			Type:        "unit-test",

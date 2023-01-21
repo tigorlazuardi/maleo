@@ -16,7 +16,7 @@ import (
 func TestResponder_RespondStream(t *testing.T) {
 	maleoGen := func() (*maleo.Maleo, *maleo.TestingJSONLogger) {
 		logger := maleo.NewTestingJSONLogger()
-		tow := maleo.NewMaleo(maleo.Service{
+		tow := maleo.New(maleo.Service{
 			Name:        "test",
 			Environment: "test",
 			Type:        "test",

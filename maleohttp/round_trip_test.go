@@ -30,7 +30,7 @@ func TestNewRoundTrip(t *testing.T) {
 	}{
 		{
 			name:  "success",
-			maleo: maleo.NewMaleo(service),
+			maleo: maleo.New(service),
 			handler: http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 				w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 				w.WriteHeader(http.StatusOK)
@@ -139,7 +139,7 @@ func TestWrapHTTPClient_Get(t *testing.T) {
 		{
 			name:  "200 status code",
 			args:  args{},
-			maleo: maleo.NewMaleo(service),
+			maleo: maleo.New(service),
 			handler: http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 				writer.Header().Set("Content-Type", "application/json")
 				writer.WriteHeader(http.StatusOK)
@@ -200,7 +200,7 @@ func TestWrapHTTPClient_Get(t *testing.T) {
 			args: args{
 				opts: Option.RoundTrip().CallerDepth(5).AddCallerDepth(1),
 			},
-			maleo: maleo.NewMaleo(service),
+			maleo: maleo.New(service),
 			handler: http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 				writer.Header().Set("Content-Type", "application/json")
 				writer.WriteHeader(http.StatusBadRequest)

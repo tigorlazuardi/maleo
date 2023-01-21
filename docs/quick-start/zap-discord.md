@@ -3,12 +3,7 @@ hide:
     - toc
 ---
 
-# Quick Start
-
-**Maleo by default does nothing**. It will still do the wrapping and some nice stuffs around as one might expect, but
-every call to `Log` and `Notify` from all sources will be a Noop if you don't configure it.
-
-It is by design so it can interop easily with unit tests. So there's no need to call `maleo.SetGlobal` on unit tests.
+# Zap Discord S3 Setup
 
 ```go title="Setup"
 func setupMaleo() {

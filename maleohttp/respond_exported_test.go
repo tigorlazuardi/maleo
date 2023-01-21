@@ -17,7 +17,7 @@ func TestGlobalRespond(t *testing.T) {
 		t.Skipf("skipping test; set %s env to run", envKey)
 	}
 	maleoGen := func(logger maleo.Logger) *maleo.Maleo {
-		t := maleo.NewMaleo(maleo.Service{
+		t := maleo.New(maleo.Service{
 			Name:        "responder-test",
 			Environment: "testing",
 			Type:        "unit-test",

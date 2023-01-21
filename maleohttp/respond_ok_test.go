@@ -49,7 +49,7 @@ func TestResponder_Respond(t *testing.T) {
 		maleo  func(logger maleo.Logger) *maleo.Maleo
 	}
 	maleoGen := func(logger maleo.Logger) *maleo.Maleo {
-		t := maleo.NewMaleo(maleo.Service{
+		t := maleo.New(maleo.Service{
 			Name:        "responder-test",
 			Environment: "testing",
 			Type:        "unit-test",

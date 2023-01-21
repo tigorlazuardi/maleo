@@ -19,8 +19,8 @@ type Maleo struct {
 	name          string
 }
 
-// NewMaleo creates a new Maleo instance.
-func NewMaleo(service Service, opts ...InitOption) *Maleo {
+// New creates a new Maleo instance.
+func New(service Service, opts ...InitOption) *Maleo {
 	m := &Maleo{
 		service: service,
 		defaultParams: &MessageParameters{

@@ -50,3 +50,12 @@ plugins:
     - tags
 
 repo_url: https://github.com/tigorlazuardi/maleo
+
+nav:
+    - Introduction: 'index.md'
+    - 'Quick Start':
+          - 'Quick Start': 'quick-start/index.md'
+          - 'Zap & Discord': 'quick-start/zap-discord.md'
+          - 'Testing': 'quick-start/testing.md'
+    - Documentation:
+          - Documentation: 'documentation/index.md'

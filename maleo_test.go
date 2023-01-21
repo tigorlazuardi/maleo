@@ -38,7 +38,7 @@ func Test_multierror_Error(t *testing.T) {
 }
 
 func TestNewMaleo(t *testing.T) {
-	mal := NewMaleo(Service{}, Option.Init().
+	mal := New(Service{}, Option.Init().
 		Logger(NoopLogger{}).
 		Name("test").
 		CallerDepth(1).

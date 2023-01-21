@@ -28,7 +28,7 @@ package maleo
 //	  return maleo.Wrap(err).Message("something went wrong").Log(ctx).Notify(ctx)
 //	}
 func Wrap(err error) ErrorBuilder {
-	return global.Wrap(err)
+	return Global().Wrap(err)
 }
 
 // Bail creates a new ErrorBuilder from simple messages.
@@ -36,19 +36,19 @@ func Wrap(err error) ErrorBuilder {
 // If args are not empty, msg will be fed into fmt.Errorf along with the args.
 // Otherwise, msg will be fed into `errors.New()`.
 func Bail(msg string, args ...any) ErrorBuilder {
-	return global.Bail(msg, args...)
+	return Global().Bail(msg, args...)
 }
 
 // WrapFreeze is a Shorthand for `maleo.Wrap(err).Message(message, args...).Freeze()`
 //
 // Useful when just wanting to add extra simple messages to the error chain.
 func WrapFreeze(err error, message string, args ...any) Error {
-	return global.WrapFreeze(err, message, args...)
+	return Global().WrapFreeze(err, message, args...)
 }
 
 // BailFreeze creates new immutable Error from simple messages.
 //
 // It's a shorthand for `maleo.Bail(msg, args...).Freeze()`.
 func BailFreeze(msg string, args ...any) Error {
-	return global.BailFreeze(msg, args...)
+	return Global().BailFreeze(msg, args...)
 }

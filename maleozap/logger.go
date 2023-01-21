@@ -19,18 +19,18 @@ func (f TraceCapturerFunc) CaptureTrace(ctx context.Context) []zap.Field {
 	return f(ctx)
 }
 
-type DisableField uint8
+type DisabledField uint8
 
-func (d DisableField) Has(flag DisableField) bool {
+func (d DisabledField) Has(flag DisabledField) bool {
 	return d&flag != 0
 }
 
-func (d *DisableField) Set(flag DisableField) {
+func (d *DisabledField) Set(flag DisabledField) {
 	*d |= flag
 }
 
 const (
-	DisableTime DisableField = 1 << iota
+	DisableTime DisabledField = 1 << iota
 	DisableCaller
 	DisableTrace
 	DisableService
@@ -39,26 +39,36 @@ const (
 	DisableContext
 	DisableError
 
-	DisableNothing DisableField = 0
-	DisableAll     DisableField = ^DisableNothing
+	DisableNothing DisabledField = 0
+	DisableAll     DisabledField = ^DisableNothing
 )
 
 type Logger struct {
 	*zap.Logger
 	tracer TraceCapturer
-	flag   DisableField
+	flag   DisabledField
 }
 
-func NewLogger(l *zap.Logger) *Logger {
+func New(l *zap.Logger) *Logger {
+	l = l.WithOptions(zap.AddCallerSkip(4))
 	return &Logger{
 		Logger: l,
 		tracer: TraceCapturerFunc(func(ctx context.Context) []zap.Field { return nil }),
-		flag:   DisableTime,
+		flag:   DisableTime | DisableCaller,
 	}
 }
 
 func (l *Logger) SetTraceCapturer(capturer TraceCapturer) {
 	l.tracer = capturer
+}
+
+// SetDisabledFieldFlag sets the field from Maleo's Entry or Maleo's Error
+// from being added to the zap log fields.
+//
+// e.g. SetDisableField(maleozap.DisableTime | maleozap.DisableCaller)
+// will prevent data of Error.Time() or Error.Caller() from being printed.
+func (l *Logger) SetDisabledFieldFlag(flag DisabledField) {
+	l.flag = flag
 }
 
 func (l *Logger) Log(ctx context.Context, entry maleo.Entry) {
