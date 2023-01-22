@@ -8,23 +8,11 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/tigorlazuardi/maleo"
-	"github.com/tigorlazuardi/maleo/bucket/maleos3-v2"
-	"github.com/tigorlazuardi/maleo/loader"
 	"github.com/tigorlazuardi/maleo/maleodiscord"
 	"github.com/tigorlazuardi/maleo/maleozap"
 )
 
-func checkEnvs(envs ...string) error {
-	for _, env := range envs {
-		if os.Getenv(env) == "" {
-			return fmt.Errorf("environment variable %s is not set", env)
-		}
-	}
-	return nil
-}
-
 func main() {
-	loader.LoadEnv() // load .env files.
 	var err error
 	defer func() {
 		if err != nil {
@@ -32,22 +20,12 @@ func main() {
 			os.Exit(1)
 		}
 	}()
-	err = checkEnvs(
-		"DISCORD_WEBHOOK",
-		"AWS_ACCESS_KEY_ID",
-		"AWS_SECRET_KEY_ID",
-		"AWS_ENDPOINT",
-	)
-	if err != nil {
+	if os.Getenv("DISCORD_WEBHOOK") == "" {
+		err = fmt.Errorf("environment variable DISCORD_WEBHOOK is not set")
 		return
 	}
 
-	s3bucket, err := maleos3.NewS3Bucket(os.Getenv("AWS_ENDPOINT"))
-	if err != nil {
-		return
-	}
-
-	discord := maleodiscord.NewDiscordBot(os.Getenv("DISCORD_WEBHOOK"), maleodiscord.WithBucket(s3bucket))
+	discord := maleodiscord.NewDiscordBot(os.Getenv("DISCORD_WEBHOOK"))
 	zlog, err := zap.NewProduction()
 	if err != nil {
 		return
