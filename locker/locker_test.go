@@ -28,7 +28,7 @@ func TestLocalLock(t *testing.T) {
 	}
 
 	_, err = cache.Get(nil, "test")
-	if err != Nil {
+	if err != ErrNil {
 		t.Fatal("should return ErrNilCache")
 	}
 	err = cache.Set(nil, "test", []byte("test"), time.Nanosecond)
@@ -37,7 +37,7 @@ func TestLocalLock(t *testing.T) {
 	}
 	time.Sleep(time.Nanosecond)
 	_, err = cache.Get(nil, "test")
-	if err != Nil {
+	if err != ErrNil {
 		t.Fatal("should return ErrNilCache")
 	}
 

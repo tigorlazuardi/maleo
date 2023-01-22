@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var Nil = errors.New("value does not exist")
+var ErrNil = errors.New("value does not exist")
 
 // --8<-- [start:locker]
 
@@ -87,13 +87,13 @@ func (m *LocalLock) Get(ctx context.Context, key string) ([]byte, error) {
 	cache, ok := m.state[key]
 	if !ok {
 		m.mu.RUnlock()
-		return nil, Nil
+		return nil, ErrNil
 	}
 	m.mu.RUnlock()
 	now := time.Now()
 	if now.After(cache.time) {
 		m.Delete(ctx, key)
-		return nil, Nil
+		return nil, ErrNil
 	}
 	return cache.value, nil
 }
