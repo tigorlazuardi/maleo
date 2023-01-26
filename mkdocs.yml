@@ -1,4 +1,8 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
 site_name: Maleo
+site_description: 'Documentation for Maleo'
+site_author: Tigor Hutasuhut
 theme:
     icon:
         tag:
@@ -50,6 +54,7 @@ plugins:
     - tags
 
 repo_url: https://github.com/tigorlazuardi/maleo
+repo_name: tigorlazuardi/maleo
 
 nav:
     - Introduction: 'index.md'

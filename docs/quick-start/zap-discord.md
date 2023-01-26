@@ -3,7 +3,7 @@ hide:
     - toc
 ---
 
-# Zap Discord S3 Setup
+# Zap Discord Setup
 
 ```go title="Setup"
 func setupMaleo() {
@@ -37,7 +37,7 @@ func setupMaleo() {
 **_Setup is best done in the earliest possible in your code_**. `maleo.SetGlobal` does not support `Mutex` and may cause
 unexpected result when called in concurrent manner.
 
-After you setup Maleo, you can use it anywhere in your code.
+After you finish setup Maleo, you can use it anywhere in your code.
 
 ```go title="Use"
 func foo() {
