@@ -6,6 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Documentation for Maleo">
+      
+      
+        <meta name="author" content="Tigor Hutasuhut">
       
       
       
@@ -203,7 +207,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    tigorlazuardi/maleo
   </div>
 </a>
       </div>
@@ -250,7 +254,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    tigorlazuardi/maleo
   </div>
 </a>
     </div>
@@ -443,6 +447,21 @@
   
 
     
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="trivia/why-does-this-library-exist/" class="md-nav__link">
+        Why Does This Exist?
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -515,14 +534,14 @@ They will be updated as soon as possible.</p>
 documentation to be a good read. If you're interested in helping a poor fellow out, please contact me by opening an
 issue.</p>
 </div>
-<p>Maleo is an <em>opiniated</em> Golang library / framework to handle Errors, Logging, and Notification. All of those are handled
-in one swoop to enhance developer experience.</p>
+<p>Maleo is an <em>opinionated</em> Golang library / framework to handle Errors, Logging, and Notification. All of those are
+handled in one swoop to enhance developer experience.</p>
 <p>Maleo's purpose is to give certain understanding on how an Error happened, but not just for the developer him/herself,
 but also the team, QA, or anyone else in the team who have the same privilege and collective interest (e.g. your tech
 lead or product manager who wants to understand where the fault lies).</p>
 <p>So basically, when something goes down, the whole gang knows there's a problem and the cause of the reason is available
 to them, not just the devs.</p>
-<p>If you want to know the motivation why this exist check <a href="trivia/why-does-this-library-exist/">here</a>.</p>
+<p>If you want to know the motivation why this exists check <a href="trivia/why-does-this-library-exist/">here</a>.</p>
 <h2 id="features">Features</h2>
 <ol>
 <li>
@@ -554,13 +573,13 @@ to them, not just the devs.</p>
 </code></pre></div>
 </li>
 <li>
-<p>Collect only relevant Stack traces informations. While <code>runtime.Stack</code> method is available, it prints too many
-   informations. Most of the time I just want to know "who calls this?", and want just that information and don't care
+<p>Collect only relevant Stack traces information. While <code>runtime.Stack</code> method is available, it prints too much
+   information. Most of the time I just want to know "who calls this?", and want just that information and don't care
    about other libraries.</p>
 </li>
 <li>
-<p>Easily extensible. You can easily add your own Logger and Messengers to use your favorite logger library and
-   notification services respectively.</p>
+<p>Easily extensible. You can easily add your own <a href="documentation/logger/">Logger</a> and <a href="documentation/messenger/">Messenger</a> integration to use your favorite logger
+   library and notification services respectively.</p>
 </li>
 <li>
 <p>Support integration with popular libraries and platforms. Like <a href="https://github.com/uber-go/zap">zap</a>,

@@ -6,6 +6,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Documentation for Maleo">
+      
+      
+        <meta name="author" content="Tigor Hutasuhut">
       
       
       
@@ -205,7 +209,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    tigorlazuardi/maleo
   </div>
 </a>
       </div>
@@ -250,7 +254,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    tigorlazuardi/maleo
   </div>
 </a>
     </div>
@@ -402,6 +406,21 @@
   
 
     
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trivia/why-does-this-library-exist/" class="md-nav__link">
+        Why Does This Exist?
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -427,6 +446,13 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pretext" class="md-nav__link">
+    Pretext
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#initial-setup" class="md-nav__link">
@@ -460,6 +486,19 @@
     Adding Messenger
   </a>
   
+    <nav class="md-nav" aria-label="Adding Messenger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discord-as-messenger" class="md-nav__link">
+    Discord as Messenger
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -492,13 +531,16 @@
 
 
 <h1 id="quick-start">Quick Start</h1>
-<p><strong>Maleo by default does nothing</strong>. It will still do the wrapping and some nice stuffs around as one might expect, but
-every call to <code>Log</code> and <code>Notify</code> from all sources will be a Noop if you don't configure it.</p>
-<p>It is by design as it can interop easily with unit tests. So there's no need to call <code>maleo.SetGlobal</code> on unit tests.</p>
+<p>This page guides users on how to set up <code>Maleo</code>. If you just want the full code example setup, you can skip directly to
+<a href="#example-full-code-setup-and-usage">Full Code Example</a>.</p>
+<h2 id="pretext">Pretext</h2>
+<p><strong>Maleo by default does nothing</strong>. It will still do the wrapping and collect metadata and information as one might
+expect, but every call to <code>Log</code> and <code>Notify</code> from all sources will be a <code>NO-OP</code> if you don't configure it.</p>
+<p>It is intended by design so <code>Maleo</code> can interop easily with unit tests. There's no need to call <code>maleo.SetGlobal</code> on
+unit tests since there's no external calls by default, but you can still check the error themselves while still in
+memory.</p>
 <p>The examples shown in this page are usable and have sensible defaults, but more likely you will need to personalize your
 configuration to match what you or your team needed.</p>
-<p>If you just want the full code example setup, you can skip directly to
-<a href="#example-full-code-setup-and-usage">Full Code Example</a>.</p>
 <h2 id="initial-setup">Initial Setup</h2>
 <p><code>Maleo</code> by itself does nothing special. It collects information and data to be able to be used by other services or
 libraries, but on its own, it does not have output to be consumable by humans i.e. logs and messages.</p>
@@ -543,6 +585,8 @@ However, information like <code>Message</code> and <code>Error Stack</code> are 
 <p>The reason is simple, <code>Maleo</code> wants to give as much concrete information as possible to allow implementors to create
 innovative, flexible, query-able, and standardized structured logs but still dynamic and developer friendly enough to
 allow passing information with rich context as painless as possible.</p>
+<p><a href="../documentation/logger/">Logger</a> can be anything you want, but for this guide, <a href="https://github.com/uber-go/zap">Zap</a> will be used since <code>Maleo</code> already has integration nicely
+setup.</p>
 <h3 id="zap-as-logger-for-maleo"><a href="https://github.com/uber-go/zap">Zap</a> as <a href="../documentation/logger/">Logger</a> for <code>Maleo</code></h3>
 <p>We will use <a href="https://github.com/uber-go/zap">Zap</a> as the <a href="../documentation/logger/">Logger</a> engine for the simple reason that <code>Maleo</code> has submodule <code>maleozap</code> as bridge between
 <a href="https://github.com/uber-go/zap">Zap</a> and <code>Maleo</code> for painless integration.</p>
@@ -663,7 +707,32 @@ allow passing information with rich context as painless as possible.</p>
 <code>context</code> can be used to distinguish if the users of your App and API properly follows your documentation or as proof
 for your third-party that the fault are theirs. More information can be found on <a href="../documentation/logger/zap/">Zap's Integration Page</a> such as why
 the JSON output is like above.</p>
-<h2 id="adding-messenger">Adding Messenger</h2>
+<h2 id="adding-messenger">Adding <a href="../documentation/messenger/">Messenger</a></h2>
+<p>Now, if logging is the only thing the library offers, then it's very unlikely you will have reason to pick this library
+up.</p>
+<p>The strongest value <code>Maleo</code> offers is the experience to log and send notification in one flow, we cannot do that without
+latter part without installing a <a href="../documentation/messenger/">Messenger</a>.</p>
+<p>To fulfill such requirement, we will use <code>maleodiscord</code>, which offers the ability to send anything serializable to a
+<a href="https://discord.com">Discord</a> channel.</p>
+<h3 id="discord-as-messenger"><a href="https://discord.com">Discord</a> as <a href="../documentation/messenger/">Messenger</a></h3>
+<p><code>maleodiscord</code> offers a nice integration with <code>Discord</code> that is simple to set up. Just a <code>webhook</code> URL and you are good
+to go.</p>
+<p><code>maleodiscord</code> also counts how big your data will be sent and if your message exceeds the limit, part of your message
+will be cutoff and the full data will be sent as attachment.</p>
+<div class="admonition note">
+<p>The cutoff part will still be displayed. It's just now it have a text to redirect the reader to read the full
+message in attachment.</p>
+</div>
+<p>This means <strong>one</strong> error message alone can be as big as <code>8 MB</code> of data just for the free tier alone when using Discord's
+CDN. So you can have <strong><em>2 Million to 8 Million</em></strong> (UTF-8 chars can take from one byte to four bytes) character space to
+send your data.</p>
+<p>This comes with a strong caveat that whatever you
+<a href="https://support.discord.com/hc/en-us/community/posts/360061593771-Privacy-for-CDN-attachements">upload is public</a>, as
+per the ToC of <a href="https://discord.com">Discord</a>. <strong>TLDR, anyone with the URL can open your file even if they are not part of your server</strong>.</p>
+<p>To support privacy, <code>maleodiscord</code> offers a <a href="../documentation/bucket/">Bucket</a> integration to upload your files somewhere else and use the
+uploaded URL as links in the messages, so you can control your data privacy.</p>
+<p>This guide will not cover such case, but you can read how to increase your data privacy and security in <a href="./">Advanced
+Guide</a>.</p>
 <h2 id="example-full-code-setup-and-usage">Example Full Code Setup and Usage</h2>
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">_example/zap_discord/main.go</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
