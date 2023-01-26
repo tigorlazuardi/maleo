@@ -59,3 +59,4 @@ nav:
           - 'Testing': 'quick-start/testing.md'
     - Documentation:
           - Documentation: 'documentation/index.md'
+    - 'Why Does This Exist?': 'trivia/why-does-this-library-exist.md'
