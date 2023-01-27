@@ -25,12 +25,12 @@ func NewGzipCompressionWithLevel(lvl int) *GzipCompression {
 	return &GzipCompression{level: lvl}
 }
 
-// ContentEncoding implements towerhttp.ContentEncodingHint.
+// ContentEncoding implements maleohttp.ContentEncodingHint.
 func (g GzipCompression) ContentEncoding() string {
 	return "gzip"
 }
 
-// Compress implements towerhttp.Compressor.
+// Compress implements maleohttp.Compressor.
 func (g GzipCompression) Compress(b []byte) ([]byte, bool, error) {
 	// 1500 is the max size of ethernet frame, 60 is the maximum range of TCP Header.
 	//
@@ -58,7 +58,7 @@ func (g GzipCompression) Compress(b []byte) ([]byte, bool, error) {
 	return c, true, err
 }
 
-// StreamCompress implements towerhttp.StreamCompressor.
+// StreamCompress implements maleohttp.StreamCompressor.
 func (g GzipCompression) StreamCompress(contentType string, origin io.Reader) (io.Reader, bool) {
 	// Gzip benefits heavily from text content. So we only compress text content.
 	//

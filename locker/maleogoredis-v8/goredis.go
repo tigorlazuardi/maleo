@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
+
 	"github.com/tigorlazuardi/maleo/locker"
 )
 
@@ -22,7 +23,7 @@ func (g *goredis) Set(ctx context.Context, key string, value []byte, ttl time.Du
 	return g.client.Set(ctx, key, value, ttl).Err()
 }
 
-// Get the Value by Key. Returns tower.ErrNilCache if not found or ttl has passed.
+// Get the Value by Key. Returns maleo.ErrNilCache if not found or ttl has passed.
 func (g *goredis) Get(ctx context.Context, key string) ([]byte, error) {
 	v, err := g.client.Get(ctx, key).Result()
 	return []byte(v), err

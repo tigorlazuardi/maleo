@@ -26,9 +26,9 @@ func (exported) SetResponder(r *Responder) {
 //
 // body is expected to be a serializable type. For streams, use RespondStream.
 //
-// HTTP status code by default is http.StatusOK. If body implements tower.HTTPCodeHint, the status code will be set to the
-// value returned by the tower.HTTPCodeHint method. If the towerhttp.Option.Responder().StatusCode() RespondOption is set,
-// it will override the status regardless of the tower.HTTPCodeHint.
+// HTTP status code by default is http.StatusOK. If body implements maleo.HTTPCodeHint, the status code will be set to the
+// value returned by the maleo.HTTPCodeHint method. If the maleohttp.Option.Responder().StatusCode() RespondOption is set,
+// it will override the status regardless of the maleo.HTTPCodeHint.
 //
 // There's a special case if you pass http.NoBody as body, there will be no respond body related operations executed.
 // StatusCode default value is STILL http.StatusOK. If you wish to set the status code to http.StatusNoContent, you
@@ -42,7 +42,7 @@ func Respond(rw http.ResponseWriter, request *http.Request, body any, opts ...Re
 
 // RespondStream writes the given stream to the http.ResponseWriter.
 //
-// If the stream implements tower.HTTPCodeHint, the status code will be set to the value returned by the tower.HTTPCodeHint.
+// If the stream implements maleo.HTTPCodeHint, the status code will be set to the value returned by the maleo.HTTPCodeHint.
 //
 // If the Compressor supports StreamCompressor, the stream will be compressed by said StreamCompressor and
 // written to the http.ResponseWriter.
@@ -50,7 +50,7 @@ func Respond(rw http.ResponseWriter, request *http.Request, body any, opts ...Re
 // There's a special case if you pass http.NoBody as body, there will be no respond body related operations executed.
 // StatusCode default value is STILL http.StatusOK. You can still override this output by setting the
 // related RespondOption.
-// With http.NoBody as body, Towerhttp will immediately respond with status code after RespondOption are evaluated
+// With http.NoBody as body, maleohttp will immediately respond with status code after RespondOption are evaluated
 // and end the process.
 //
 // Body of nil will be treated as http.NoBody.
@@ -62,9 +62,9 @@ func RespondStream(rw http.ResponseWriter, request *http.Request, contentType st
 //
 // error is expected to be a serializable type.
 //
-// HTTP Status code by default is http.StatusInternalServerError. If error implements tower.HTTPCodeHint, the status code will be set to the
-// value returned by the tower.HTTPCodeHint method. If the Option.Responder().SetStatusCode() RespondOption is set, it will override
-// the status regardless of the tower.HTTPCodeHint.
+// HTTP Status code by default is http.StatusInternalServerError. If error implements maleo.HTTPCodeHint, the status code will be set to the
+// value returned by the maleo.HTTPCodeHint method. If the Option.Responder().SetStatusCode() RespondOption is set, it will override
+// the status regardless of the maleo.HTTPCodeHint.
 //
 // if err is nil, it will be replaced with "Internal Server Error" message. It is done this way, because the library
 // assumes that the user mishandled the method and to prevent sending empty values, a generic Internal Server Error message

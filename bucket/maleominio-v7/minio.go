@@ -2,9 +2,11 @@ package maleominio
 
 import (
 	"context"
-	"github.com/minio/minio-go/v7"
-	"github.com/tigorlazuardi/maleo/bucket"
 	"time"
+
+	"github.com/minio/minio-go/v7"
+
+	"github.com/tigorlazuardi/maleo/bucket"
 )
 
 type Minio struct {
@@ -31,7 +33,7 @@ func (m Minio) Upload(ctx context.Context, files []bucket.File) []bucket.UploadR
 	return results
 }
 
-// Wrap wraps minio client to tower bucket implementation.
+// Wrap wraps minio client to Maleo bucket implementation.
 //
 // Client credentials must have permission to write access to target bucket.
 //

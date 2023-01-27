@@ -130,7 +130,7 @@ func TestDiscordMultipart(t *testing.T) {
 			}
 			err := tow.Wait(context.Background())
 			if err != nil {
-				t.Fatalf("tower.Wait() error = %v", err)
+				t.Fatalf("maleo.Wait() error = %v", err)
 			}
 			m.Wait()
 			if m.count != tt.wantCount {
