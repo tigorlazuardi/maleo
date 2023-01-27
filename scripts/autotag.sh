@@ -41,4 +41,4 @@ for f in $FILES; do
 done
 
 echo "== INFO: Adding Tag: v$NEWTAG"
-git tag v$NEWTAG
+git tag v"$NEWTAG"
