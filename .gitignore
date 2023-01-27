@@ -18,3 +18,7 @@ site/
 .cache/
 
 *.cov
+
+# Ensure whatever in build folder is never comitted in CI environment
+build/
+bin/
