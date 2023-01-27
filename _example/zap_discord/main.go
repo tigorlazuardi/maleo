@@ -4,15 +4,30 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 
 	"go.uber.org/zap"
 
 	"github.com/tigorlazuardi/maleo"
+	"github.com/tigorlazuardi/maleo/loader"
 	"github.com/tigorlazuardi/maleo/maleodiscord"
 	"github.com/tigorlazuardi/maleo/maleozap"
 )
 
+func parseInt(s string) (i int, err error) {
+	i, err = strconv.Atoi(s)
+	if err != nil {
+		ctx := context.Background()
+		return i, maleo.Wrap(err).
+			Message("failed to parse '%s' into int", s).
+			Log(ctx).
+			Notify(ctx)
+	}
+	return i, err
+}
+
 func main() {
+	loader.LoadEnv()
 	var err error
 	defer func() {
 		if err != nil {
@@ -56,6 +71,9 @@ func main() {
 
 	// create entry and send them to discord.
 	maleo.NewEntry("hello world").Log(ctx).Notify(ctx)
+
+	// Test the error message.
+	_, _ = parseInt("hello")
 
 	// wait for discord to finish sending messages.
 	err = maleo.Wait(ctx)

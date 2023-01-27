@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"runtime"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -37,6 +38,7 @@ type Discord struct {
 	hook             Hook
 	dataEncoder      DataEncoder
 	codeBlockBuilder CodeBlockBuilder
+	outgoing         *sync.WaitGroup
 }
 
 // Name implements tower.Messenger interface.
@@ -55,39 +57,37 @@ func (d *Discord) SendMessage(ctx context.Context, msg maleo.MessageContext) {
 
 // Wait implements tower.Messenger interface.
 func (d *Discord) Wait(ctx context.Context) error {
-	err := make(chan error)
+	sig := make(chan struct{})
 	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				err <- ctx.Err()
-				break
-			default:
-				if d.queue.Len() == 0 {
-					err <- nil
-					break
-				}
-				time.Sleep(time.Millisecond * 50)
-			}
-		}
+		d.outgoing.Wait()
+		close(sig)
 	}()
-
-	return <-err
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-sig:
+		return nil
+	}
 }
 
 func (d *Discord) work() {
 	if atomic.CompareAndSwapInt32(&d.working, 0, 1) {
+		// We need at add one point synchronously to ensure .Wait works as intended, no matter the CPU.
+		d.outgoing.Add(1)
 		go func() {
 			for d.queue.HasNext() {
+				d.outgoing.Add(1)
 				d.sem <- struct{}{}
 				kv := d.queue.Dequeue()
 				go func() {
 					ctx := maleo.DetachedContext(kv.Context)
 					d.send(ctx, kv.Message)
 					<-d.sem
+					d.outgoing.Done()
 				}()
 			}
 			atomic.StoreInt32(&d.working, 0)
+			d.outgoing.Done()
 		}()
 	}
 }
@@ -121,6 +121,7 @@ func NewDiscordBot(webhook string, opts ...DiscordOption) *Discord {
 		hook:             NoopHook{},
 		dataEncoder:      JSONDataEncoder{},
 		codeBlockBuilder: JSONCodeBlockBuilder{},
+		outgoing:         &sync.WaitGroup{},
 	}
 	d.builder = EmbedBuilderFunc(d.defaultEmbedBuilder)
 	for _, opt := range opts {

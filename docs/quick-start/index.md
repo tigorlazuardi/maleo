@@ -215,6 +215,82 @@ This means **one** error message alone can be as big as `8 MB` of data just for 
 CDN. So you can have **_2 Million to 8 Million_** (UTF-8 chars can take from one byte to four bytes) character space to
 send your data.
 
+<!-- TODO: finish this section as Messenger -->
+
+---
+
+We will start by pulling `maleodiscord` library into your project. Enter this in your terminal:
+
+```sh
+go get github.com/tigorlazuardi/maleo/maleodiscord
+```
+
+To create a new [Discord] [Messenger], you can simply do this:
+
+```go
+discord := maleodiscord.
+	NewDiscordBot("https://discord.com/api/webhooks/<webhook_id>/<webhook_token>")
+```
+
+Now we have to register the `Messenger` to `Maleo`.
+
+```go linenums="1" hl_lines="17-18"
+func SetupLogger() (maleo.Logger, error) {
+    logger, err := zap.NewProduction()
+    if err != nil {
+        return nil, fmt.Error("failed to setup zap.NewProduction(): %w", err)
+    }
+    mlog := maleozap.New(logger)
+    return mlog, nil
+}
+
+func SetupMaleo() {
+    service := maleo.Service{
+        Name:          "my-service",
+        Type:          "http-server",
+        Environment:   "production",
+        Version:       "v0.1.0"
+    }
+	discord := maleodiscord.
+		NewDiscordBot("https://discord.com/api/webhooks/<webhook_id>/<webhook_token>")
+    mal := maleo.New(service)
+    if log, err := SetupLogger(); err != nil {
+        fmt.Println(err.Error())
+    } else {
+        mal.SetLogger(log)
+    }
+	mal.Register(discord)
+    maleo.SetGlobal(mal)
+}
+```
+
+Now a code like this will send your message to `stderr` and [Discord]:
+
+```go
+maleo.NewEntry("hello from Maleo").Log(ctx).Notify(ctx)
+```
+
+For error handling, you can do stuff like this. Returns error, but logs and send notification at the same time.
+
+```go
+func parseInt(s string) (i int, err error) {
+	num, err := strconv.Atoi(s)
+	if err != nil {
+		ctx := context.Background()
+		return num, maleo.Wrap(err).
+			Message("failed to parse '%s' to int", s).
+			Log(ctx).
+			Notify(ctx)
+	}
+	return num, nil
+}
+```
+
+## Afterwords
+
+Congratulations, you have set up a simple `Maleo` instance where your errors will not only rich on it's content, but
+also thrown into your or your team's face when they occur.
+
 This comes with a strong caveat that whatever you
 [upload is public](https://support.discord.com/hc/en-us/community/posts/360061593771-Privacy-for-CDN-attachements), as
 per the ToC of [Discord]. **TLDR, anyone with the URL can open your file even if they are not part of your server**.
