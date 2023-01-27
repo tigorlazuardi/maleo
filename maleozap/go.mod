@@ -3,7 +3,7 @@ module github.com/tigorlazuardi/maleo/maleozap
 go 1.19
 
 require (
-	github.com/tigorlazuardi/maleo v0.1.0
+	github.com/tigorlazuardi/maleo v0.1.1
 	go.uber.org/zap v1.24.0
 )
 

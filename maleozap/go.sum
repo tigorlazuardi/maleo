@@ -6,6 +6,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
 github.com/tigorlazuardi/maleo v0.1.0 h1:h5oQAfdoZZSe4LXHyo72QLnRKQZ3w/+eQ0alaIQ76o0=
 github.com/tigorlazuardi/maleo v0.1.0/go.mod h1:6vN7wY/IQWculbWyrSaMuSZfnkDiwH4W+MocF3TyHaY=
+github.com/tigorlazuardi/maleo v0.1.1 h1:jTKxhPbXXh4mnKKExzkKiDEnmXk3hEWoIG6wWu2KSVc=
+github.com/tigorlazuardi/maleo v0.1.1/go.mod h1:6vN7wY/IQWculbWyrSaMuSZfnkDiwH4W+MocF3TyHaY=
 go.uber.org/atomic v1.10.0 h1:9qC72Qh0+3MqyJbAn8YU5xVq1frD8bn3JtD2oXtafVQ=
 go.uber.org/atomic v1.10.0/go.mod h1:LUxbIzbOniOlMKjJjyPfpl4v+PKK2cNJn91OQbhoJI0=
 go.uber.org/goleak v1.1.11 h1:wy28qYRKZgnJTxGxvye5/wgWr1EKjmUDGYox5mGlRlI=

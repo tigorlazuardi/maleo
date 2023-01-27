@@ -1,7 +1,14 @@
 set positional-arguments
 
 sync-deps:
-	@GOSUMDB=off ./scripts/sync-deps.sh
+	@GOSUMDB=off bash ./scripts/sync-deps.sh
+
+sync-tags:
+	@bash ./scripts/sync-tag.sh
+
+ci-sync: sync-deps
+	@bash ./scripts/sync-tag.sh
+	@bash ./scripts/autotag.sh
 
 docs-deploy version: docs-binary
 	@mike deploy --push --update-aliases "$1" latest
