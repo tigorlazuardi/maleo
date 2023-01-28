@@ -35,6 +35,7 @@ steps:
           GITHUB_USER:
               from_secret: github_user
       commands:
+          - mv -f build / || true
           - echo machine github.com login $GITHUB_USER password $GITHUB_TOKEN > ~/.netrc
           - bash ./scripts/sync-deps.sh
           - bash ./scripts/sync-tag.sh
@@ -42,6 +43,7 @@ steps:
           - git commit -m "Sync Workspace [CI SKIP]"
           - git push -u origin main
           - git push --tags
+          - mv -f /build . || true
     - name: Rebuild Cache
       image: drillster/drone-volume-cache
       failure: ignore
