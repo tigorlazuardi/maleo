@@ -29,6 +29,7 @@ steps:
       image: golang:1.19
       environment:
           GOPATH: /build
+          GOCACHE: /build/cache
           GOSUMDB: off
           GITHUB_TOKEN:
               from_secret: github_token
@@ -95,6 +96,7 @@ steps:
             path: /var/run/docker.sock
       environment:
           GOPATH: /build
+          GOCACHE: /build/cache
           GOSUMDB: off
           DOCKER_HOST: unix:///var/run/docker.sock
           AWS_ENDPOINT:
