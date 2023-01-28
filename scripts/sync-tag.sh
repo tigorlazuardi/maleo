@@ -34,6 +34,7 @@ NEWTAG="$MAJ.$MIN.$PATCH"
 FILES=$(find . -name go.mod | grep -v '^\./go.mod$')
 
 for f in $FILES; do
+	PACKAGE=$(echo "$f" | cut -d/ -f2- | xargs dirname)
 	echo "== INFO: Updating $PACKAGE to $NEWTAG"
 	sed -i -r "s#(\s+github\.com/tigorlazuardi/maleo.*\sv).*#\1$NEWTAG#" "$f"
 	git add "$f"

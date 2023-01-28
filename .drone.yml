@@ -8,10 +8,28 @@ trigger:
     event:
         - push
 
+volumes:
+    - name: cache
+      host:
+          path: /var/tmp/cache
+
 steps:
+    - name: Restore Cache
+      image: drillster/drone-volume-cache
+      failure: ignore
+      volumes:
+          - name: cache
+            path: /cache
+      settings:
+          restore: true
+          mount:
+              - ./bin
+              - ./build
     - name: Sync Workspace
       image: golang:1.19
       environment:
+          GOPATH: /build
+          GOSUMDB: off
           GITHUB_TOKEN:
               from_secret: github_token
           GITHUB_USER:
@@ -24,6 +42,17 @@ steps:
           - git commit -m "Sync Workspace [CI SKIP]"
           - git push -u origin main
           - git push --tags
+    - name: Rebuild Cache
+      image: drillster/drone-volume-cache
+      failure: ignore
+      volumes:
+          - name: cache
+            path: /cache
+      settings:
+          rebuild: true
+          mount:
+              - ./bin
+              - ./build
 
 ---
 kind: pipeline
