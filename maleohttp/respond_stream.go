@@ -9,7 +9,7 @@ import (
 
 // RespondStream writes the given stream to the http.ResponseWriter.
 //
-// If the stream implements maleo.HTTPCodeHint, the status code will be set to the value returned by the tower.HTTPCodeHint.
+// If the stream implements maleo.HTTPCodeHint, the status code will be set to the value returned by the maleo.HTTPCodeHint.
 //
 // There's a special case if you pass http.NoBody as body, there will be no respond body related operations executed.
 // StatusCode default value is set to http.StatusNoContent. You can still override this output by setting the

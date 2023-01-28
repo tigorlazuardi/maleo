@@ -109,7 +109,7 @@ func TestIntegration(t *testing.T) {
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 	bot := maleodiscord.NewDiscordBot(webhook,
-		maleodiscord.WithName("towerdiscord-integration-test"),
+		maleodiscord.WithName("maleo-integration-test"),
 		maleodiscord.WithHook(testHook{t: t, wg: wg}),
 	)
 	mal.Register(bot)

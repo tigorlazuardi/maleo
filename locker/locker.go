@@ -81,7 +81,7 @@ func (m *LocalLock) Set(_ context.Context, key string, value []byte, ttl time.Du
 	return nil
 }
 
-// Get the Value by Key. Returns tower.ErrNilCache if not found or ttl has passed.
+// Get the Value by Key. Returns maleo.ErrNilCache if not found or ttl has passed.
 func (m *LocalLock) Get(ctx context.Context, key string) ([]byte, error) {
 	m.mu.RLock()
 	cache, ok := m.state[key]

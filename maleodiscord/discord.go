@@ -41,7 +41,7 @@ type Discord struct {
 	outgoing         *sync.WaitGroup
 }
 
-// Name implements tower.Messenger interface.
+// Name implements maleo.Messenger interface.
 func (d *Discord) Name() string {
 	if d.name == "" {
 		return "discord"
@@ -49,13 +49,13 @@ func (d *Discord) Name() string {
 	return d.name
 }
 
-// SendMessage implements tower.Messenger interface.
+// SendMessage implements maleo.Messenger interface.
 func (d *Discord) SendMessage(ctx context.Context, msg maleo.MessageContext) {
 	d.queue.Enqueue(NewJob(ctx, msg))
 	d.work()
 }
 
-// Wait implements tower.Messenger interface.
+// Wait implements maleo.Messenger interface.
 func (d *Discord) Wait(ctx context.Context) error {
 	sig := make(chan struct{})
 	go func() {

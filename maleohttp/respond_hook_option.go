@@ -63,7 +63,7 @@ func (h RespondHookOptionBuilder) FilterRespondStream(filter FilterRespond) Resp
 	}))
 }
 
-// BeforeRespond provides callback to be run before Responder calls transform on the body. You have full access on how to modify how towerhttp.Responder behave by using this api.
+// BeforeRespond provides callback to be run before Responder calls transform on the body. You have full access on how to modify how maleohttp.Responder behave by using this api.
 //
 // You may change the transformers, compressions to use, etc.
 //
@@ -76,9 +76,9 @@ func (h RespondHookOptionBuilder) BeforeRespond(before BeforeRespondFunc) Respon
 
 // OnRespond provides callback to be run after Responder writes the body.
 //
-// OnRespond callback is executed when towerhttp.Responder.Respond() is called.
+// OnRespond callback is executed when maleohttp.Responder.Respond() is called.
 //
-// By default, the hook will use this api to call tower to log the request and respond.
+// By default, the hook will use this api to call maleo to log the request and respond.
 func (h RespondHookOptionBuilder) OnRespond(on ResponseHookFunc) RespondHookOptionBuilder {
 	return append(h, respondHookOptionFunc(func(r *respondHook) {
 		r.onRespond = on
@@ -87,9 +87,9 @@ func (h RespondHookOptionBuilder) OnRespond(on ResponseHookFunc) RespondHookOpti
 
 // OnRespondError provides callback to be run after Responder writes the body.
 //
-// OnRespondError callback is executed when towerhttp.Responder.RespondError() is called.
+// OnRespondError callback is executed when maleohttp.Responder.RespondError() is called.
 //
-// By default, the hook will use this api to call tower to log the request and respond.
+// By default, the hook will use this api to call maleo to log the request and respond.
 func (h RespondHookOptionBuilder) OnRespondError(on ResponseErrorHookFunc) RespondHookOptionBuilder {
 	return append(h, respondHookOptionFunc(func(r *respondHook) {
 		r.onRespondError = on
@@ -98,9 +98,9 @@ func (h RespondHookOptionBuilder) OnRespondError(on ResponseErrorHookFunc) Respo
 
 // OnRespondStream provides callback to be run after Responder writes the body.
 //
-// OnRespondStream callback is executed when towerhttp.Responder.RespondStream() is called.
+// OnRespondStream callback is executed when maleohttp.Responder.RespondStream() is called.
 //
-// By default, the hook will use this api to call tower to log the request and respond.
+// By default, the hook will use this api to call maleo to log the request and respond.
 func (h RespondHookOptionBuilder) OnRespondStream(on ResponseStreamHookFunc) RespondHookOptionBuilder {
 	return append(h, respondHookOptionFunc(func(r *respondHook) {
 		r.onRespondStream = on

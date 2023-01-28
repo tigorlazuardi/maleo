@@ -2,7 +2,7 @@ package maleohttp
 
 type option struct{}
 
-// Option holds all the available options for responding with towerhttp.
+// Option holds all the available options for responding with maleohttp.
 var Option option
 
 func (option) Respond() RespondOptionBuilder {

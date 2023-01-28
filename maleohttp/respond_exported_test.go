@@ -12,7 +12,7 @@ import (
 )
 
 func TestGlobalRespond(t *testing.T) {
-	const envKey = "TOWER_HTTP_TEST_EXPORTED"
+	const envKey = "MALEO_HTTP_TEST_EXPORTED"
 	if os.Getenv(envKey) == "" {
 		t.Skipf("skipping test; set %s env to run", envKey)
 	}

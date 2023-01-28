@@ -1,0 +1,103 @@
+kind: pipeline
+name: Sync Tags
+type: docker
+
+trigger:
+    branch:
+        - main
+    event:
+        - push
+
+steps:
+    - name: Sync Workspace
+      image: golang:1.19
+      environment:
+          GITHUB_TOKEN:
+              from_secret: github_token
+          GITHUB_USER:
+              from_secret: github_user
+      commands:
+          - echo machine github.com login $GITHUB_USER password $GITHUB_TOKEN > ~/.netrc
+          - bash ./scripts/sync-deps.sh
+          - bash ./scripts/sync-tag.sh
+          - bash ./scripts/autotag.sh
+          - git commit -m "Sync Workspace [CI SKIP]"
+          - git push -u origin main
+          - git push --tags
+
+---
+kind: pipeline
+type: docker
+name: Test
+
+trigger:
+    event:
+        - pull_request
+
+volumes:
+    # Some tests uses dockertest.
+    # So we need to mount hosts docker to avoid downloading images multiple times.
+    - name: docker_sock
+      host:
+          path: /var/run/docker.sock
+    - name: cache
+      host:
+          path: /var/tmp/cache
+
+steps:
+    - name: Restore Cache
+      image: drillster/drone-volume-cache
+      failure: ignore
+      volumes:
+          - name: cache
+            path: /cache
+      settings:
+          restore: true
+          mount:
+              - ./bin
+              - ./build
+    - name: Test
+      image: golang:1.19
+      volumes:
+          - name: docker_sock
+            path: /var/run/docker.sock
+      environment:
+          GOPATH: /build
+          GOSUMDB: off
+          DOCKER_HOST: unix:///var/run/docker.sock
+          AWS_ENDPOINT:
+              from_secret: aws_endpoint
+          AWS_ACCESS_KEY_ID:
+              from_secret: aws_access_key
+          AWS_SECRET_ACCESS_KEY:
+              from_secret: aws_secret_key
+          MINIO_TEST_ENDPOINT:
+              from_secret: minio_endpoint
+          MINIO_TEST_ACCESS_KEY:
+              from_secret: minio_access_key
+          MINIO_TEST_SECRET_KEY:
+              from_secret: minio_secret_key
+          MINIO_TEST_BUCKET:
+              from_secret: minio_bucket
+          DISCORD_WEBHOOK:
+              from_secret: discord_maleo_webhook
+      commands:
+          - export PATH="$(pwd)/bin:$PATH"
+          - apt update && apt install docker -y
+          - mv -f build / || true
+          - command -v just > /dev/null || (curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash
+            -s -- --to ./bin)
+          - just test
+          - mv -f /build . || true
+
+    - name: Rebuild Cache
+      image: drillster/drone-volume-cache
+      failure: ignore
+      volumes:
+          - name: cache
+            path: /cache
+      settings:
+          rebuild: true
+          mount:
+              - ./bin
+              - ./build
