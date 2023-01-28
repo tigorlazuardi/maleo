@@ -12,6 +12,7 @@ ci-sync: sync-deps
 
 docs-deploy version: docs-binary
 	@mike deploy --push --update-aliases "$1" latest
+	@mike set-default --push latest
 
 docs-build version: docs-binary
 	@mike deploy --update-aliases "$1" latest
