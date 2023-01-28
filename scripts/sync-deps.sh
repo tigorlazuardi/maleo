@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "== INFO: Running 'go work sync'"
 GOSUMDB=off go work sync
 git add .
 
