@@ -30,14 +30,13 @@ type ErrorBuilder interface {
 
 	// Context Sets additional data that will enrich how the error will look.
 	//
-	// `maleo.Fields` is a type that is well integrated with built-in Messengers or Logger.
-	// Using this type as Context value will have the performance more optimized when being marshaled
-	// or provides additional quality of life improvements without having to implement those features
-	// yourself. Use `maleo.F` as alias for this type.
+	// The input is key-value format. The odd index will be used as key and the even index will be used as value.
+	//
+	// Key if not a string will be converted to string using fmt.Sprint.
 	//
 	// Example:
 	//
-	// 	maleo.Wrap(err).Code(400).Context(maleo.F{"foo": "bar"}).Freeze()
+	// 	maleo.Wrap(err).Code(400).Context("count", 123, "username", "kilua", "ranking", 5).Freeze()
 	Context(ctx ...any) ErrorBuilder
 
 	// Key Sets the key for this error. This is how the Messengers will use to identify if an error is the same as previous or not.

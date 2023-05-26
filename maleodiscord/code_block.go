@@ -3,6 +3,7 @@ package maleodiscord
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"strconv"
 
@@ -25,31 +26,50 @@ func (v valueMarshaler) CodeBlockJSON() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetEscapeHTML(false)
+	enc.SetIndent("", indent)
 	if len(v) == 1 {
-		enc.SetIndent("", indent)
-		err := enc.Encode(v[0])
-		return buf.Bytes(), err
-	}
-	j := make([]json.RawMessage, 0, len(v))
-	for _, value := range v {
-		buf.Reset()
-		if vm, ok := value.(maleo.CodeBlockJSONMarshaler); ok {
+		if vm, ok := v[0].(maleo.CodeBlockJSONMarshaler); ok {
 			raw, err := vm.CodeBlockJSON()
 			if err != nil {
 				return nil, err
 			}
-			j = append(j, raw)
-			continue
+			err = enc.Encode(json.RawMessage(raw))
+			return buf.Bytes(), err
 		}
-		err := enc.Encode(value)
-		if err != nil {
-			return nil, err
-		}
-		j = append(j, json.RawMessage(buf.String()))
+		err := enc.Encode(v[0])
+		return buf.Bytes(), err
 	}
-	buf.Reset()
+	m := make(map[string]any, len(v)/2)
+	var (
+		key   string
+		value any
+	)
+	for i := 0; i < len(v); i++ {
+		if i%2 == 0 {
+			keyAssert, ok := v[i].(string)
+			if !ok {
+				key = fmt.Sprint(v[i])
+			} else {
+				key = keyAssert
+			}
+		} else {
+			value = v[i]
+		}
+		if key != "" && value != nil {
+			m[key] = value
+			if vm, ok := value.(maleo.CodeBlockJSONMarshaler); ok {
+				raw, err := vm.CodeBlockJSON()
+				if err != nil {
+					return nil, err
+				}
+				m[key] = json.RawMessage(raw)
+			}
+			key = ""
+			value = nil
+		}
+	}
 	enc.SetIndent("", indent)
-	_ = enc.Encode(j)
+	_ = enc.Encode(m)
 	return buf.Bytes(), nil
 }
 

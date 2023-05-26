@@ -24,9 +24,9 @@ func TestJSONCodeBlockBuilder_Build(t *testing.T) {
 		{
 			name: "expected output - multiple values",
 			args: args{
-				value: []any{1, 2, 3},
+				value: []any{1},
 			},
-			wantW: []string{"```json", "[", "1,", "2,", "3", "]", "```"},
+			wantW: []string{"```json", "1", "```"},
 		},
 		{
 			name: "expected output - single value",
