@@ -1,9 +1,12 @@
 package maleozap
 
 import (
-	"github.com/tigorlazuardi/maleo"
+	"fmt"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/tigorlazuardi/maleo"
 )
 
 func encodeContextObject(oe zapcore.ObjectEncoder, data any) error {
@@ -61,6 +64,32 @@ func encodeContextArray(ctx []any) zapcore.ArrayMarshaler {
 		}
 		return nil
 	})
+}
+
+func toZapFields(input []any) []zap.Field {
+	var (
+		key   string
+		value any
+		out   = make([]zap.Field, 0, len(input)/2)
+	)
+	for i := 0; i < len(input); i++ {
+		if i%2 == 0 {
+			keyAssert, ok := input[i].(string)
+			if ok {
+				key = keyAssert
+			} else {
+				key = fmt.Sprint(input[i])
+			}
+		} else {
+			value = input[i]
+		}
+		if key != "" && value != nil {
+			out = append(out, toField(key, value))
+			key = ""
+			value = nil
+		}
+	}
+	return out
 }
 
 func toField(key string, value any) zap.Field {

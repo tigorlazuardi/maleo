@@ -3,8 +3,9 @@ package maleozap
 import (
 	"encoding/json"
 
-	"github.com/tigorlazuardi/maleo"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/tigorlazuardi/maleo"
 )
 
 type Error struct {
@@ -25,6 +26,7 @@ func (r richJsonError) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 		return nil
 	}
 	switch {
+	// ignore empty object and array
 	case len(b) == 2 && b[0] == '{' && b[1] == '}':
 	case len(b) == 2 && b[0] == '[' && b[1] == ']':
 	default:

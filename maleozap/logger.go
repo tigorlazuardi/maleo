@@ -3,8 +3,9 @@ package maleozap
 import (
 	"context"
 
-	"github.com/tigorlazuardi/maleo"
 	"go.uber.org/zap"
+
+	"github.com/tigorlazuardi/maleo"
 )
 
 var _ maleo.Logger = (*Logger)(nil)
@@ -136,12 +137,13 @@ func (l *Logger) LogError(ctx context.Context, err maleo.Error) {
 		if len(data) == 1 {
 			elements = append(elements, toField("context", data[0]))
 		} else if len(data) > 1 {
-			elements = append(elements, zap.Array("context", encodeContextArray(err.Context())))
+			elements = append(elements, toZapFields(data)...)
 		}
 	}
 	if !l.flag.Has(DisableError) {
 		origin := err.Unwrap()
 		elements = append(elements, toField("error", origin))
 	}
+
 	l.Logger.Log(translateLevel(err.Level()), err.Message(), elements...)
 }

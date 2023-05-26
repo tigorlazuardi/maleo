@@ -347,15 +347,18 @@ func (r richJsonError) MarshalJSON() ([]byte, error) {
 	}
 
 	summary := r.error.Error()
+
+	// We now handle empty errors after encoding.
+	//
 	// 3 because it also includes newline after brackets or quotes.
 	//
-	// The logic below looks for: ""\n, {}\n, []\n
+	// The logic below looks up for: ""\n, {}\n, []\n
 	if b.Len() == 3 && b.Bytes()[2] == '\n' {
 		v := b.Bytes()
 		switch {
 		case v[0] == '"', v[0] == '{', v[0] == '[':
 			b.Reset()
-			err := enc.Encode(map[string]string{"summary": summary})
+			err = enc.Encode(map[string]string{"summary": summary})
 			return b.Bytes(), err
 		}
 	}
@@ -363,8 +366,8 @@ func (r richJsonError) MarshalJSON() ([]byte, error) {
 	content := b.String()
 	b.Reset()
 	err = enc.Encode(map[string]json.RawMessage{
-		"details": json.RawMessage(content),
 		"summary": json.RawMessage(strconv.Quote(summary)),
+		"details": json.RawMessage(content),
 	})
 	return b.Bytes(), err
 }
