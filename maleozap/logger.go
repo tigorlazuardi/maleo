@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/tigorlazuardi/maleo"
 )
@@ -103,7 +104,14 @@ func (l *Logger) Log(ctx context.Context, entry maleo.Entry) {
 		if len(data) == 1 {
 			elements = append(elements, toField("context", data[0]))
 		} else if len(data) > 1 {
-			elements = append(elements, toZapFields(data)...)
+			fields := toZapFields(data)
+			obj := zapcore.ObjectMarshalerFunc(func(oe zapcore.ObjectEncoder) error {
+				for _, f := range fields {
+					f.AddTo(oe)
+				}
+				return nil
+			})
+			elements = append(elements, zap.Object("context", obj))
 		}
 	}
 
@@ -137,7 +145,14 @@ func (l *Logger) LogError(ctx context.Context, err maleo.Error) {
 		if len(data) == 1 {
 			elements = append(elements, toField("context", data[0]))
 		} else if len(data) > 1 {
-			elements = append(elements, toZapFields(data)...)
+			fields := toZapFields(data)
+			obj := zapcore.ObjectMarshalerFunc(func(oe zapcore.ObjectEncoder) error {
+				for _, f := range fields {
+					f.AddTo(oe)
+				}
+				return nil
+			})
+			elements = append(elements, zap.Object("context", obj))
 		}
 	}
 	if !l.flag.Has(DisableError) {
