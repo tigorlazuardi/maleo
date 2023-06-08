@@ -3,8 +3,9 @@ package maleozap
 import (
 	"time"
 
-	"github.com/tigorlazuardi/maleo"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/tigorlazuardi/maleo"
 )
 
 type Entry struct {
@@ -28,10 +29,13 @@ func (e Entry) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 				enc.AddString("context", err.Error())
 			}
 		} else {
-			err := enc.AddArray("context", encodeContextArray(e.Context()))
-			if err != nil {
-				enc.AddString("context", err.Error())
-			}
+			fields := toZapFields(ctx)
+			_ = enc.AddObject("context", zapcore.ObjectMarshalerFunc(func(oe zapcore.ObjectEncoder) error {
+				for _, field := range fields {
+					field.AddTo(oe)
+				}
+				return nil
+			}))
 		}
 	}
 	return nil

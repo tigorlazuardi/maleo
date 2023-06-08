@@ -103,7 +103,7 @@ func (l *Logger) Log(ctx context.Context, entry maleo.Entry) {
 		if len(data) == 1 {
 			elements = append(elements, toField("context", data[0]))
 		} else if len(data) > 1 {
-			elements = append(elements, zap.Array("context", encodeContextArray(entry.Context())))
+			elements = append(elements, toZapFields(data)...)
 		}
 	}
 

@@ -49,10 +49,13 @@ func (err Error) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 			enc.AddString("context", err.Error())
 		}
 	} else if len(data) > 1 {
-		err := enc.AddArray("context", encodeContextArray(data))
-		if err != nil {
-			enc.AddString("context", err.Error())
-		}
+		fields := toZapFields(data)
+		_ = enc.AddObject("context", zapcore.ObjectMarshalerFunc(func(oe zapcore.ObjectEncoder) error {
+			for _, field := range fields {
+				field.AddTo(oe)
+			}
+			return nil
+		}))
 	}
 
 	origin := err.Unwrap()
