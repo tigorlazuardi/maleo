@@ -1,4 +1,4 @@
 github.com/kinbiko/jsonassert v1.1.1 h1:DB12divY+YB+cVpHULLuKePSi6+ui4M/shHSzJISkSE=
 github.com/kinbiko/jsonassert v1.1.1/go.mod h1:NO4lzrogohtIdNUNzx8sdzB55M4R4Q1bsrWVdqQ7C+A=
-github.com/tigorlazuardi/maleo v0.3.0 h1:XotAVn48tEDIVy/8F8RA2wNJPe8ktJUAs4TrggQWAl0=
-github.com/tigorlazuardi/maleo v0.3.0/go.mod h1:i8aCbEKBpFR/6quL58kczy928pdWFmTxrjRIANbG0gM=
+github.com/tigorlazuardi/maleo v0.3.1 h1:QejY6ZSUIuZ8mNcSbvzApU73yESzjt/DsScBemP1lsI=
+github.com/tigorlazuardi/maleo v0.3.1/go.mod h1:i8aCbEKBpFR/6quL58kczy928pdWFmTxrjRIANbG0gM=
