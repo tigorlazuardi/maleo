@@ -66,7 +66,14 @@ func (c caller) PC() uintptr {
 }
 
 func (c caller) MarshalJSON() ([]byte, error) {
-	return json.Marshal(c.String())
+	type A struct {
+		File string `json:"file"`
+		Name string `json:"name"`
+	}
+	return json.Marshal(A{
+		File: c.String(),
+		Name: c.ShortName(),
+	})
 }
 
 func (c caller) Function() *runtime.Func {
