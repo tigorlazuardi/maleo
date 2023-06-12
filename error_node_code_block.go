@@ -3,6 +3,7 @@ package maleo
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -124,6 +125,32 @@ func (e *ErrorNode) deduplicateAgainstOtherError(other Error) marshalFlag {
 	return m
 }
 
+func toMap(v []any) map[string]any {
+	var (
+		key   string
+		value any
+		out   = make(map[string]any, len(v)/2+1)
+	)
+	for i := 0; i < len(v); i++ {
+		if i%2 == 0 {
+			keyAssert, ok := v[i].(string)
+			if ok {
+				key = keyAssert
+			} else {
+				key = fmt.Sprint(v[i])
+			}
+		} else {
+			value = v[i]
+		}
+		if key != "" && value != nil {
+			out[key] = value
+			key = ""
+			value = nil
+		}
+	}
+	return out
+}
+
 func (e *ErrorNode) createCodeBlockPayload(m marshalFlag) *implJsonMarshaler {
 	ctx := func() any {
 		if len(e.inner.context) == 0 {
@@ -132,7 +159,7 @@ func (e *ErrorNode) createCodeBlockPayload(m marshalFlag) *implJsonMarshaler {
 		if len(e.inner.context) == 1 {
 			return e.inner.context[0]
 		}
-		return e.inner.context
+		return toMap(e.inner.context)
 	}()
 	var next error
 	if e.next != nil {

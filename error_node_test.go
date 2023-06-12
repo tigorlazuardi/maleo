@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/kinbiko/jsonassert"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/kinbiko/jsonassert"
 )
 
 func TestErrorNode_CodeBlockJSON(t *testing.T) {
