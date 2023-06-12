@@ -21,7 +21,7 @@ func (e Entry) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 	if key := e.Key(); key != "" {
 		enc.AddString("key", key)
 	}
-	enc.AddString("caller", e.Caller().String())
+	_ = enc.AddObject("caller", Caller{e.Caller()})
 	if ctx := e.Context(); len(ctx) > 0 {
 		if len(ctx) == 1 {
 			err := encodeContextObject(enc, ctx[0])

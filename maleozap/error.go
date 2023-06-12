@@ -38,7 +38,7 @@ func (r richJsonError) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 func (err Error) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 	enc.AddInt("code", err.Code())
 	enc.AddString("message", err.Message())
-	enc.AddString("caller", err.Caller().String())
+	_ = enc.AddObject("caller", Caller{err.Caller()})
 	if key := err.Key(); key != "" {
 		enc.AddString("key", key)
 	}
