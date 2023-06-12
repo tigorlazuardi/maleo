@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/ory/dockertest/v3 v3.9.1
-	github.com/tigorlazuardi/maleo/locker v0.3.0
+	github.com/tigorlazuardi/maleo/locker v0.3.1
 )
 
 require (
