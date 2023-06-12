@@ -81,6 +81,32 @@ func (d *Discord) defaultEmbedBuilder(
 	return embeds, files
 }
 
+func toMap(v []any) map[string]any {
+	var (
+		key   string
+		value any
+		out   = make(map[string]any, len(v)/2+1)
+	)
+	for i := 0; i < len(v); i++ {
+		if i%2 == 0 {
+			keyAssert, ok := v[i].(string)
+			if ok {
+				key = keyAssert
+			} else {
+				key = fmt.Sprint(v[i])
+			}
+		} else {
+			value = v[i]
+		}
+		if key != "" && value != nil {
+			out[key] = value
+			key = ""
+			value = nil
+		}
+	}
+	return out
+}
+
 //goland:noinspection GoUnhandledErrorResult
 func (d *Discord) buildContextEmbed(
 	msg maleo.MessageContext,
@@ -109,6 +135,8 @@ func (d *Discord) buildContextEmbed(
 		var v any = contextData
 		if len(msg.Context()) == 1 {
 			v = contextData[0]
+		} else {
+			v = toMap(contextData)
 		}
 		err := d.dataEncoder.Encode(data, v)
 		if err != nil {
