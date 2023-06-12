@@ -119,10 +119,10 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.1 h1:w7B6lhMri9wdJUVmEZPGGhZzrYTPvgJArz7wNPgYKsk=
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635/go.mod h1:hkRG7XYTFWNJGYcbNJQlaLq0fg1yr4J4t/NcTQtrfww=
-github.com/tigorlazuardi/maleo/bucket v0.2.2 h1:3DbO2a7It1wOSMvtSAK3O/PZZSV6hXcWomUhUU6sg4g=
-github.com/tigorlazuardi/maleo/bucket v0.2.2/go.mod h1:MQ4YQeQiXdhHfh/i7tbx0HycO3rdd8JzvdmLS+5RKNc=
-github.com/tigorlazuardi/maleo/loader v0.2.2 h1:TlWCy9V9sY74VYzxhtehq8ZK70syVcV7n7gTJmjos14=
-github.com/tigorlazuardi/maleo/loader v0.2.2/go.mod h1:eY9GwSMRY//D/Ym8md71XPT7CBBt7IDsgg1CAN1pxmE=
+github.com/tigorlazuardi/maleo/bucket v0.2.3 h1:bSsemLC1bRJ0IYChbRW1ajU3Hur6Y2e2KuOb7otRLTY=
+github.com/tigorlazuardi/maleo/bucket v0.2.3/go.mod h1:MQ4YQeQiXdhHfh/i7tbx0HycO3rdd8JzvdmLS+5RKNc=
+github.com/tigorlazuardi/maleo/loader v0.2.3 h1:7KgQ+pZfcAWsPx6T+u+PxiUIwrFcuBzh8eO8OY9QjHc=
+github.com/tigorlazuardi/maleo/loader v0.2.3/go.mod h1:eY9GwSMRY//D/Ym8md71XPT7CBBt7IDsgg1CAN1pxmE=
 github.com/urfave/cli v1.22.1/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtXRu0=
 github.com/vishvananda/netlink v1.1.0/go.mod h1:cTgwzPIzzgDAYoQrMm0EdrjRUBkTqKYppBueQtXaqoE=
 github.com/vishvananda/netns v0.0.0-20191106174202-0a2b9b5464df/go.mod h1:JP3t17pCcGlemwknint6hfoeCVQrEMVwxRLRjXpq+BU=
