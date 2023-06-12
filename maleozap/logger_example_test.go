@@ -13,6 +13,5 @@ func ExampleNew_production() {
 		panic(err)
 	}
 	mlog := maleozap.New(logger)
-	mlog.Sync()
 	maleo.Global().SetLogger(mlog)
 }
