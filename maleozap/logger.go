@@ -56,7 +56,7 @@ func New(l *zap.Logger) *Logger {
 	return &Logger{
 		Logger: l,
 		tracer: TraceCapturerFunc(func(ctx context.Context) []zap.Field { return nil }),
-		flag:   DisableTime | DisableCaller,
+		flag:   DisableTime,
 	}
 }
 
@@ -96,7 +96,7 @@ func (l *Logger) Log(ctx context.Context, entry maleo.Entry) {
 		}
 	}
 	if !l.flag.Has(DisableCaller) {
-		elements = append(elements, zap.Stringer("caller", entry.Caller()))
+		elements = append(elements, zap.Object("caller", Caller{entry.Caller()}))
 	}
 
 	if !l.flag.Has(DisableContext) {
@@ -133,7 +133,7 @@ func (l *Logger) LogError(ctx context.Context, err maleo.Error) {
 		elements = append(elements, zap.Int("code", err.Code()))
 	}
 	if !l.flag.Has(DisableCaller) {
-		elements = append(elements, zap.Stringer("caller", err.Caller()))
+		elements = append(elements, zap.Object("caller", Caller{err.Caller()}))
 	}
 	if !l.flag.Has(DisableKey) {
 		if key := err.Key(); key != "" {
