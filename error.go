@@ -2,13 +2,15 @@ package maleo
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
 type ErrorConstructorContext struct {
-	Err    error
-	Caller Caller
-	Maleo  *Maleo
+	Err            error
+	Caller         Caller
+	MessageAndArgs []any
+	Maleo          *Maleo
 }
 
 type ErrorConstructor interface {
@@ -23,10 +25,24 @@ func (f ErrorConstructorFunc) ConstructError(ctx *ErrorConstructorContext) Error
 
 func defaultErrorGenerator(ctx *ErrorConstructorContext) ErrorBuilder {
 	var message string
-	if msg := Query.GetMessage(ctx.Err); msg != "" {
-		message = msg
+	if len(ctx.MessageAndArgs) > 0 {
+		var fmtMessage string
+		if msg, ok := ctx.MessageAndArgs[0].(string); ok {
+			fmtMessage = msg
+		} else {
+			fmtMessage = fmt.Sprint(ctx.MessageAndArgs[0])
+		}
+		if len(ctx.MessageAndArgs) > 1 {
+			message = fmt.Sprintf(fmtMessage, ctx.MessageAndArgs[1:]...)
+		} else {
+			message = fmtMessage
+		}
 	} else {
-		message = ctx.Err.Error()
+		if msg := Query.GetMessage(ctx.Err); msg != "" {
+			message = msg
+		} else {
+			message = ctx.Err.Error()
+		}
 	}
 	return &errorBuilder{
 		code:    Query.GetCodeHint(ctx.Err),
