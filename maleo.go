@@ -110,29 +110,31 @@ func (m *Maleo) RegisterBenched(messengers ...Messenger) {
 }
 
 // Wrap works like exported maleo.Wrap, but at the scope of this Maleo instance instead.
-func (m *Maleo) Wrap(err error) ErrorBuilder {
+func (m *Maleo) Wrap(err error, msgAndArgs ...any) ErrorBuilder {
 	if err == nil {
 		err = ErrNil
 	}
 	caller := GetCaller(m.callerDepth)
 	return m.engine.ConstructError(&ErrorConstructorContext{
-		Err:    err,
-		Caller: caller,
-		Maleo:  m,
+		Err:            err,
+		Caller:         caller,
+		Maleo:          m,
+		MessageAndArgs: msgAndArgs,
 	})
 }
 
 // WrapFreeze works like exported maleo.WrapFreeze, but at the scope of this Maleo instance instead.
-func (m *Maleo) WrapFreeze(err error, msg string, args ...any) Error {
+func (m *Maleo) WrapFreeze(err error, msgAndArgs ...any) Error {
 	if err == nil {
 		err = ErrNil
 	}
 	caller := GetCaller(m.callerDepth)
 	return m.engine.ConstructError(&ErrorConstructorContext{
-		Err:    err,
-		Caller: caller,
-		Maleo:  m,
-	}).Message(msg, args...).Freeze()
+		Err:            err,
+		Caller:         caller,
+		Maleo:          m,
+		MessageAndArgs: msgAndArgs,
+	}).Freeze()
 }
 
 // NewEntry Creates a new EntryBuilder. The returned EntryBuilder may be appended with values.
@@ -222,12 +224,24 @@ func (m *Maleo) SetEngine(engine Engine) {
 }
 
 // Log implements the Logger interface. Maleo instance itself can be a Logger for other Maleo instance.
+//
+// If ctx contains a Maleo instance, it will be used instead.
 func (m *Maleo) Log(ctx context.Context, entry Entry) {
+	if mctx := MaleoFromContext(ctx); mctx != nil {
+		mctx.Log(ctx, entry)
+		return
+	}
 	m.logger.Log(ctx, entry)
 }
 
 // LogError implements the Logger interface. Maleo instance itself can be a Logger for other Maleo instance.
+//
+// If ctx contains a Maleo instance, it will be used instead.
 func (m *Maleo) LogError(ctx context.Context, err Error) {
+	if mctx := MaleoFromContext(ctx); mctx != nil {
+		mctx.LogError(ctx, err)
+		return
+	}
 	m.logger.LogError(ctx, err)
 }
 
