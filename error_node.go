@@ -31,11 +31,11 @@ type implJsonMarshaler struct {
 	Key     string   `json:"key,omitempty"`
 	Level   string   `json:"level,omitempty"`
 	Service *Service `json:"service,omitempty"`
-	Context any      `json:"context,omitempty"`
+	Context []any    `json:"context,omitempty"`
 	Error   error    `json:"error,omitempty"`
 }
 
-func newImplJSONMarshaler(e Error, next error, ctx any, service *Service) implJsonMarshaler {
+func newImplJSONMarshaler(e Error, next error, ctx []any, service *Service) implJsonMarshaler {
 	return implJsonMarshaler{
 		Time:    e.Time().Format(time.RFC3339),
 		Code:    e.Code(),
@@ -47,6 +47,23 @@ func newImplJSONMarshaler(e Error, next error, ctx any, service *Service) implJs
 		Error:   richJsonError{next},
 		Service: service,
 	}
+}
+
+func (im implJsonMarshaler) MarshalJSON() ([]byte, error) {
+	type Alias implJsonMarshaler
+	type A struct {
+		Alias
+		Context any `json:"context,omitempty"`
+	}
+	a := A{Alias(im), im.Context}
+	if len(im.Context) > 1 {
+		a.Context = toMap(im.Context)
+	} else if len(im.Context) == 0 {
+		a.Context = nil
+	} else {
+		a.Context = im.Context[0]
+	}
+	return json.Marshal(a)
 }
 
 type marshalFlag uint8
@@ -137,22 +154,13 @@ func (e *ErrorNode) createMarshalJSONFlag() marshalFlag {
 }
 
 func (e *ErrorNode) createPayload(m marshalFlag) *implJsonMarshaler {
-	ctx := func() any {
-		if len(e.inner.context) == 0 {
-			return nil
-		}
-		if len(e.inner.context) == 1 {
-			return e.inner.context[0]
-		}
-		return e.inner.context
-	}()
 	var next error
 	if e.next != nil {
 		next = e.next
 	} else {
 		next = e.inner.origin
 	}
-	marshalAble := newImplJSONMarshaler(e, next, ctx, &e.inner.maleo.service)
+	marshalAble := newImplJSONMarshaler(e, next, e.inner.context, &e.inner.maleo.service)
 
 	if m.Has(marshalSkipCode) {
 		marshalAble.Code = 0

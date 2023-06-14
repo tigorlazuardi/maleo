@@ -396,7 +396,7 @@ func Test_Error(t *testing.T) {
 		"key": "foo bar",
 		"level": "warn",
 		"service": "<<PRESENCE>>",
-		"context": [1, 2],
+		"context": {"1": 2},
 		"error": {"summary": "based 2"}
 	}`, now.Format(time.RFC3339))
 
