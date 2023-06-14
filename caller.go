@@ -67,12 +67,12 @@ func (c caller) PC() uintptr {
 
 func (c caller) MarshalJSON() ([]byte, error) {
 	type A struct {
-		File string `json:"file"`
-		Name string `json:"name"`
+		File     string `json:"file"`
+		Function string `json:"function"`
 	}
 	return json.Marshal(A{
-		File: c.String(),
-		Name: c.ShortName(),
+		File:     c.String(),
+		Function: c.ShortName(),
 	})
 }
 
