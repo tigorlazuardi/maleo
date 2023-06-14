@@ -17,6 +17,7 @@ type Maleo struct {
 	engine        Engine
 	callerDepth   int
 	name          string
+	isGlobal      bool
 }
 
 // New creates a new Maleo instance.
@@ -223,24 +224,43 @@ func (m *Maleo) SetEngine(engine Engine) {
 	m.engine = engine
 }
 
+// Clone creates a new Maleo instance with the same parameters as the current one.
+//
+// The new Maleo instance will have the same name, logger, engine, and caller depth, but marked as non-global.
+func (m *Maleo) Clone() *Maleo {
+	return &Maleo{
+		service:       m.service,
+		defaultParams: m.defaultParams.clone(),
+		logger:        m.logger,
+		engine:        m.engine,
+		callerDepth:   m.callerDepth,
+		name:          m.name,
+		isGlobal:      false,
+	}
+}
+
 // Log implements the Logger interface. Maleo instance itself can be a Logger for other Maleo instance.
 //
-// If ctx contains a Maleo instance, it will be used instead.
+// If ctx contains a Maleo instance, and current instance is a Global one, it will be used instead.
 func (m *Maleo) Log(ctx context.Context, entry Entry) {
-	if mctx := MaleoFromContext(ctx); mctx != nil {
-		mctx.Log(ctx, entry)
-		return
+	if m.isGlobal {
+		if mctx := MaleoFromContext(ctx); mctx != nil {
+			mctx.Log(ctx, entry)
+			return
+		}
 	}
 	m.logger.Log(ctx, entry)
 }
 
 // LogError implements the Logger interface. Maleo instance itself can be a Logger for other Maleo instance.
 //
-// If ctx contains a Maleo instance, it will be used instead.
+// If ctx contains a Maleo instance, and current instance is a Global one, it will be used instead.
 func (m *Maleo) LogError(ctx context.Context, err Error) {
-	if mctx := MaleoFromContext(ctx); mctx != nil {
-		mctx.LogError(ctx, err)
-		return
+	if m.isGlobal {
+		if mctx := MaleoFromContext(ctx); mctx != nil {
+			mctx.LogError(ctx, err)
+			return
+		}
 	}
 	m.logger.LogError(ctx, err)
 }
