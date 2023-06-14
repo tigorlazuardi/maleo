@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/kinbiko/jsonassert"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/kinbiko/jsonassert"
 )
 
 func TestEntryNode(t *testing.T) {
@@ -101,7 +102,7 @@ func TestEntryNode(t *testing.T) {
 			"key": "foo",
 			"level": "error",
 			"service": {"name": "test", "environment": "test", "type": "test", "version": "v0.1.0-test"},
-			"context": [1, 2]
+			"context": {"1": 2}
 		}`)
 
 	l := newMockLogger()

@@ -152,15 +152,6 @@ func toMap(v []any) map[string]any {
 }
 
 func (e *ErrorNode) createCodeBlockPayload(m marshalFlag) *implJsonMarshaler {
-	ctx := func() any {
-		if len(e.inner.context) == 0 {
-			return nil
-		}
-		if len(e.inner.context) == 1 {
-			return e.inner.context[0]
-		}
-		return toMap(e.inner.context)
-	}()
 	var next error
 	if e.next != nil {
 		next = e.next
@@ -174,7 +165,7 @@ func (e *ErrorNode) createCodeBlockPayload(m marshalFlag) *implJsonMarshaler {
 		Caller:  e.Caller(),
 		Key:     e.Key(),
 		Level:   e.Level().String(),
-		Context: ctx,
+		Context: e.inner.context,
 		Error:   cbJson{next},
 		Service: &e.inner.maleo.service,
 	}

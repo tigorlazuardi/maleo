@@ -19,13 +19,6 @@ func (e EntryNode) MarshalJSON() ([]byte, error) {
 	b := &bytes.Buffer{}
 	enc := json.NewEncoder(b)
 	enc.SetEscapeHTML(false)
-	var ctx any
-	v := e.Context()
-	if len(v) == 1 {
-		ctx = v[0]
-	} else {
-		ctx = v
-	}
 	err := enc.Encode(implJsonMarshaler{
 		Time:    e.Time().Format(time.RFC3339),
 		Code:    e.Code(),
@@ -34,7 +27,7 @@ func (e EntryNode) MarshalJSON() ([]byte, error) {
 		Key:     e.Key(),
 		Level:   e.Level().String(),
 		Service: &e.inner.maleo.service,
-		Context: ctx,
+		Context: e.Context(),
 	})
 	return b.Bytes(), err
 }
