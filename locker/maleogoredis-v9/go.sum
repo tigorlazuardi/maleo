@@ -95,8 +95,8 @@ github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UV
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.1 h1:w7B6lhMri9wdJUVmEZPGGhZzrYTPvgJArz7wNPgYKsk=
 github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635/go.mod h1:hkRG7XYTFWNJGYcbNJQlaLq0fg1yr4J4t/NcTQtrfww=
-github.com/tigorlazuardi/maleo/locker v0.3.2 h1:qCygnXo8nX8vP0ztQZ+1LrrUNR9PeYhh4mJRjQllk4E=
-github.com/tigorlazuardi/maleo/locker v0.3.2/go.mod h1:gWVE4hn5v5YpCvjBn/9HeMnQSTeinrADb1C1TQznT4M=
+github.com/tigorlazuardi/maleo/locker v0.4.0 h1:ceFX+xWV2x2ifutGUE0dGTGpXVjY6UQ83/kcivGvXww=
+github.com/tigorlazuardi/maleo/locker v0.4.0/go.mod h1:gWVE4hn5v5YpCvjBn/9HeMnQSTeinrADb1C1TQznT4M=
 github.com/urfave/cli v1.22.1/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtXRu0=
 github.com/vishvananda/netlink v1.1.0/go.mod h1:cTgwzPIzzgDAYoQrMm0EdrjRUBkTqKYppBueQtXaqoE=
 github.com/vishvananda/netns v0.0.0-20191106174202-0a2b9b5464df/go.mod h1:JP3t17pCcGlemwknint6hfoeCVQrEMVwxRLRjXpq+BU=
