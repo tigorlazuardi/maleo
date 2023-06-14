@@ -9,8 +9,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.47
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/ory/dockertest/v3 v3.9.1
-	github.com/tigorlazuardi/maleo/bucket v0.4.0
-	github.com/tigorlazuardi/maleo/loader v0.4.0
+	github.com/tigorlazuardi/maleo/bucket v0.4.1
+	github.com/tigorlazuardi/maleo/loader v0.4.1
 )
 
 require (
