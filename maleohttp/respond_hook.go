@@ -1,6 +1,7 @@
 package maleohttp
 
 import (
+	"io"
 	"net/http"
 
 	"github.com/tigorlazuardi/maleo"
@@ -85,17 +86,45 @@ type RespondHook interface {
 	AcceptRequestBodySize(r *http.Request) int
 	AcceptResponseBodyStreamSize(respondContentType string, request *http.Request) int
 
-	BeforeRespond(ctx *RespondContext, request *http.Request) *RespondContext
+	// BeforeRespond is called after populating the handlers and values but before doing any operation to the response writer.
+	//
+	// Implementer must not write any status code or body to the response writer.
+	// It will be set by the library.
+	//
+	// Implementer is allowed to set any extra header or cookie to the response writer.
+	//
+	// Implementer can modify everything else. Return the ctx to continue the operation.
+	BeforeRespond(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, body any) *RespondContext
+	// BeforeRespondError is called after populating the handlers and values but before doing any operation to the response writer.
+	//
+	// Implementer must not write any status code or body to the response writer.
+	// It will be set by the library.
+	//
+	// Implementer is allowed to set any extra header or cookie to the response writer.
+	//
+	// Implementer can modify everything else. Return the ctx to continue the operation.
+	BeforeRespondError(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, err error) *RespondContext
+	// BeforeRespondStream is called after populating the handlers and values but before doing any operation to the response writer.
+	//
+	// Implementer must not write any status code or body to the response writer.
+	// It will be set by the library.
+	//
+	// Implementer is allowed to set any extra header or cookie to the response writer.
+	//
+	// Implementer can modify everything else. Return the ctx to continue the operation.
+	BeforeRespondStream(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, body io.Reader) *RespondContext
 	RespondHook(ctx *RespondHookContext)
 	RespondErrorHookContext(ctx *RespondErrorHookContext)
 	RespondStreamHookContext(ctx *RespondStreamHookContext)
 }
 
 type (
-	BeforeRespondFunc      = func(ctx *RespondContext, request *http.Request) *RespondContext
-	ResponseHookFunc       = func(ctx *RespondHookContext)
-	ResponseErrorHookFunc  = func(ctx *RespondErrorHookContext)
-	ResponseStreamHookFunc = func(ctx *RespondStreamHookContext)
+	BeforeRespondFunc       = func(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, body any) *RespondContext
+	BeforeRespondErrorFunc  = func(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, payload error) *RespondContext
+	BeforeRespondStreamFunc = func(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, body io.Reader) *RespondContext
+	ResponseHookFunc        = func(ctx *RespondHookContext)
+	ResponseErrorHookFunc   = func(ctx *RespondErrorHookContext)
+	ResponseStreamHookFunc  = func(ctx *RespondStreamHookContext)
 )
 
 func (r *Responder) RegisterHook(hook RespondHook) {
@@ -110,6 +139,8 @@ type respondHook struct {
 	filterRequest       FilterRequest
 	filterRespondStream FilterRespond
 	beforeRespond       BeforeRespondFunc
+	beforeRespondError  BeforeRespondErrorFunc
+	beforeRespondStream BeforeRespondStreamFunc
 	onRespond           ResponseHookFunc
 	onRespondError      ResponseErrorHookFunc
 	onRespondStream     ResponseStreamHookFunc
@@ -137,11 +168,25 @@ func (r2 respondHook) AcceptResponseBodyStreamSize(contentType string, request *
 	return 0
 }
 
-func (r2 respondHook) BeforeRespond(ctx *RespondContext, request *http.Request) *RespondContext {
-	if r2.beforeRespond == nil {
-		return ctx
+func (r2 respondHook) BeforeRespond(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, body any) *RespondContext {
+	if r2.beforeRespond != nil {
+		return r2.beforeRespond(ctx, rw, request, body)
 	}
-	return r2.beforeRespond(ctx, request)
+	return ctx
+}
+
+func (r2 respondHook) BeforeRespondError(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, errPayload error) *RespondContext {
+	if r2.beforeRespondError != nil {
+		return r2.beforeRespondError(ctx, rw, request, errPayload)
+	}
+	return ctx
+}
+
+func (r2 respondHook) BeforeRespondStream(ctx *RespondContext, rw http.ResponseWriter, request *http.Request, reader io.Reader) *RespondContext {
+	if r2.beforeRespondStream != nil {
+		return r2.beforeRespondStream(ctx, rw, request, reader)
+	}
+	return ctx
 }
 
 func (r2 respondHook) RespondHook(ctx *RespondHookContext) {

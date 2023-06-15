@@ -2,6 +2,7 @@ package maleohttp
 
 import (
 	"context"
+	"io"
 	"net/http"
 
 	"github.com/tigorlazuardi/maleo"
@@ -80,7 +81,7 @@ func (r *Responder) SetStreamCompressor(streamCompressor StreamCompressor) {
 	r.streamCompressor = streamCompressor
 }
 
-func (r Responder) buildOption(statusCode int, request *http.Request, opts ...RespondOption) *RespondContext {
+func (r Responder) buildOption(statusCode int, rw http.ResponseWriter, request *http.Request, body any, opts ...RespondOption) *RespondContext {
 	opt := &RespondContext{
 		Encoder:              r.encoder,
 		BodyTransformer:      r.transformer,
@@ -95,7 +96,47 @@ func (r Responder) buildOption(statusCode int, request *http.Request, opts ...Re
 	}
 	opt.Caller = maleo.GetCaller(opt.CallerDepth + 1)
 	for _, hook := range r.hooks {
-		opt = hook.BeforeRespond(opt, request)
+		opt = hook.BeforeRespond(opt, rw, request, body)
+	}
+	return opt
+}
+
+func (r Responder) buildOptionError(statusCode int, rw http.ResponseWriter, request *http.Request, errPayload error, opts ...RespondOption) *RespondContext {
+	opt := &RespondContext{
+		Encoder:              r.encoder,
+		BodyTransformer:      r.transformer,
+		Compressor:           r.compressor,
+		StatusCode:           statusCode,
+		ErrorBodyTransformer: r.errorTransformer,
+		CallerDepth:          r.callerDepth,
+		StreamCompressor:     r.streamCompressor,
+	}
+	for _, o := range opts {
+		o.Apply(opt)
+	}
+	opt.Caller = maleo.GetCaller(opt.CallerDepth + 1)
+	for _, hook := range r.hooks {
+		opt = hook.BeforeRespondError(opt, rw, request, errPayload)
+	}
+	return opt
+}
+
+func (r Responder) buildOptionStream(statusCode int, rw http.ResponseWriter, request *http.Request, reader io.Reader, opts ...RespondOption) *RespondContext {
+	opt := &RespondContext{
+		Encoder:              r.encoder,
+		BodyTransformer:      r.transformer,
+		Compressor:           r.compressor,
+		StatusCode:           statusCode,
+		ErrorBodyTransformer: r.errorTransformer,
+		CallerDepth:          r.callerDepth,
+		StreamCompressor:     r.streamCompressor,
+	}
+	for _, o := range opts {
+		o.Apply(opt)
+	}
+	opt.Caller = maleo.GetCaller(opt.CallerDepth + 1)
+	for _, hook := range r.hooks {
+		opt = hook.BeforeRespondStream(opt, rw, request, reader)
 	}
 	return opt
 }

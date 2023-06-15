@@ -29,7 +29,7 @@ func (r *Responder) RespondStream(rw http.ResponseWriter, request *http.Request,
 	if ch, ok := body.(maleo.HTTPCodeHint); ok {
 		statusCode = ch.HTTPCode()
 	}
-	opt := r.buildOption(statusCode, request, opts...)
+	opt := r.buildOptionStream(statusCode, rw, request, body, opts...)
 	if len(r.hooks) > 0 {
 		var clone ClonedBody = NoopCloneBody{}
 		count := r.hooks.CountMaximumRespondBodyRead(contentType, request)

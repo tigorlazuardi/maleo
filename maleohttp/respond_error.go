@@ -38,7 +38,7 @@ func (r Responder) RespondError(rw http.ResponseWriter, request *http.Request, e
 	if errPayload == nil {
 		errPayload = errInternalServerError
 	}
-	opt := r.buildOption(statusCode, request, opts...)
+	opt := r.buildOptionError(statusCode, rw, request, errPayload, opts...)
 	if len(r.hooks) > 0 {
 		defer func() {
 			var requestBody ClonedBody = NoopCloneBody{}

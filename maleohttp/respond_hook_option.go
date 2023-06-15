@@ -63,14 +63,45 @@ func (h RespondHookOptionBuilder) FilterRespondStream(filter FilterRespond) Resp
 	}))
 }
 
-// BeforeRespond provides callback to be run before Responder calls transform on the body. You have full access on how to modify how maleohttp.Responder behave by using this api.
+// BeforeRespond is called after populating the handlers and values but before doing any operation to the response writer.
 //
-// You may change the transformers, compressions to use, etc.
+// You must not write any status code or body to the response writer.
+// It will be set by the library.
 //
-// Do be careful when using this api, especially when working with other people in a team. Their responds may change suddenly without their knowing.
+// You are allowed to set any extra header or cookie to the response writer.
+//
+// You can modify everything else. Return the ctx to continue the operation.
 func (h RespondHookOptionBuilder) BeforeRespond(before BeforeRespondFunc) RespondHookOptionBuilder {
 	return append(h, respondHookOptionFunc(func(r *respondHook) {
 		r.beforeRespond = before
+	}))
+}
+
+// BeforeRespondError is called after populating the handlers and values but before doing any operation to the response writer.
+//
+// You must not write any status code or body to the response writer.
+// It will be set by the library.
+//
+// You are allowed to set any extra header or cookie to the response writer.
+//
+// You can modify everything else. Return the ctx to continue the operation.
+func (h RespondHookOptionBuilder) BeforeRespondError(before BeforeRespondErrorFunc) RespondHookOptionBuilder {
+	return append(h, respondHookOptionFunc(func(r *respondHook) {
+		r.beforeRespondError = before
+	}))
+}
+
+// BeforeRespondStream is called after populating the handlers and values but before doing any operation to the response writer.
+//
+// You must not write any status code or body to the response writer.
+// It will be set by the library.
+//
+// You are allowed to set any extra header or cookie to the response writer.
+//
+// You can modify everything else. Return the ctx to continue the operation.
+func (h RespondHookOptionBuilder) BeforeRespondStream(before BeforeRespondStreamFunc) RespondHookOptionBuilder {
+	return append(h, respondHookOptionFunc(func(r *respondHook) {
+		r.beforeRespondStream = before
 	}))
 }
 
