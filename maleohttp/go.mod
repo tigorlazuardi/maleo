@@ -4,5 +4,5 @@ go 1.19
 
 require (
 	github.com/kinbiko/jsonassert v1.1.1
-	github.com/tigorlazuardi/maleo v0.4.2
+	github.com/tigorlazuardi/maleo v0.5.0
 )
